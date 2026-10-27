@@ -1,0 +1,2131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PetLumen</title>
+<meta name="description" content="PetLumen prototype: pet health profile, symptom tracking, and sourced wellness guidance in one place.">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJQZXRMdW1lbiI+CiAgPGcgc3Ryb2tlPSIjRjJCMjMzIiBzdHJva2Utd2lkdGg9IjIuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj4KICAgIDxsaW5lIHgxPSIzNiIgeTE9IjMiIHgyPSIzNiIgeTI9IjguNSIvPgogICAgPGxpbmUgeDE9IjQzLjUiIHkxPSI2LjUiIHgyPSIzOS44IiB5Mj0iMTAuNiIvPgogICAgPGxpbmUgeDE9IjQ2IiB5MT0iMTQuNSIgeDI9IjQxIiB5Mj0iMTUuNiIvPgogIDwvZz4KICA8ZyBmaWxsPSIjMUIyQjRCIj4KICAgIDxlbGxpcHNlIGN4PSI5LjUiIGN5PSIyMSIgcng9IjQuMiIgcnk9IjUuMiIgdHJhbnNmb3JtPSJyb3RhdGUoLTE4IDkuNSAyMSkiLz4KICAgIDxlbGxpcHNlIGN4PSIxOCIgY3k9IjEyLjUiIHJ4PSI0LjQiIHJ5PSI1LjYiIHRyYW5zZm9ybT0icm90YXRlKC02IDE4IDEyLjUpIi8+CiAgICA8ZWxsaXBzZSBjeD0iMjguNSIgY3k9IjEyLjUiIHJ4PSI0LjQiIHJ5PSI1LjYiIHRyYW5zZm9ybT0icm90YXRlKDggMjguNSAxMi41KSIvPgogICAgPGVsbGlwc2UgY3g9IjM2LjUiIGN5PSIyMS41IiByeD0iNC4yIiByeT0iNS4yIiB0cmFuc2Zvcm09InJvdGF0ZSgyMCAzNi41IDIxLjUpIi8+CiAgPC9nPgogIDxwYXRoIGZpbGw9IiMxNDk0OEYiIGQ9Ik0yMyAyMi41Yy01LjYgMC0xMS44IDguNC0xMS44IDEzLjYgMCA0LjQgMy42IDYuNiA3LjQgNi42IDIgMCAzLjEtLjkgNC40LS45czIuNC45IDQuNC45YzMuOCAwIDcuNC0yLjIgNy40LTYuNiAwLTUuMi02LjItMTMuNi0xMS44LTEzLjZ6Ii8+Cjwvc3ZnPgo=" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800&display=swap">
+<style>
+/* PetLumen brand: navy, teal, and a gold accent. */
+/* Layout: one centered column; pet pages use a profile card, tabs, then a two-column work area that stacks on phones. */
+:root {
+  --brand: #1b2b4b;         /* navy header and wordmark band */
+  --brand-2: #2a3d63;
+  --ink: #1b2b4b;           /* headings and strong labels */
+  --teal: #14948f;
+  --teal-d: #0f7672;        /* links, teal text */
+  --teal-50: #e7f5f4;
+  --teal-line: #bfe3e0;
+  --teal-ink: #0d4f4c;
+  --gold: #f2b233;
+  --gold-50: #fff6e0;
+  --gold-line: #f1d48e;
+  --gold-ink: #6b4a00;
+  --on-gold: #3d2a00;
+  --on-accent: #ffffff;
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --surface-alt: #fffafa;
+  --chip-bg: #f5f7fb;
+  --navy-50: #e8edf7;
+  --text: #1d2433;
+  --muted: #5b6577;
+  --border: #e1e6ef;
+  --input-border: #cdd5e1;
+  --nav-text: #d7deea;
+  --wordmark-accent: #6fd6cf;
+  --danger: #b3261e;
+  --danger-50: #fdecea;
+  --danger-line: #f0c2bd;
+  --danger-ink: #7d1a14;
+  --ok-50: #e7f5ec;
+  --ok-ink: #1e6b3a;
+  --focus: rgba(20, 148, 143, 0.45);
+  --shadow: 0 1px 2px rgba(27, 43, 75, 0.06), 0 4px 14px rgba(27, 43, 75, 0.06);
+  --overlay: rgba(15, 22, 38, 0.6);
+  --font-display: "Nunito", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --brand: #111c33; --brand-2: #1f2e4d; --ink: #e3e9f5; --teal: #1aa8a2; --teal-d: #5fd0c9;
+    --teal-50: #123332; --teal-line: #1f5452; --teal-ink: #b5ece8;
+    --gold-50: #362a0d; --gold-line: #6b5419; --gold-ink: #f5d58a;
+    --bg: #0f1626; --surface: #172033; --surface-alt: #22171a; --chip-bg: #1d283d; --navy-50: #243150;
+    --text: #e3e8f2; --muted: #9aa6bb; --border: #2a3650; --input-border: #3a4866;
+    --danger: #ff8a80; --danger-50: #3a1816; --danger-line: #6e2a25; --danger-ink: #ffc9c3;
+    --ok-50: #15301f; --ok-ink: #9de0b4; --shadow: 0 1px 2px rgba(0, 0, 0, 0.3); --overlay: rgba(0, 0, 0, 0.7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --brand: #111c33; --brand-2: #1f2e4d; --ink: #e3e9f5; --teal: #1aa8a2; --teal-d: #5fd0c9;
+  --teal-50: #123332; --teal-line: #1f5452; --teal-ink: #b5ece8;
+  --gold-50: #362a0d; --gold-line: #6b5419; --gold-ink: #f5d58a;
+  --bg: #0f1626; --surface: #172033; --surface-alt: #22171a; --chip-bg: #1d283d; --navy-50: #243150;
+  --text: #e3e8f2; --muted: #9aa6bb; --border: #2a3650; --input-border: #3a4866;
+  --danger: #ff8a80; --danger-50: #3a1816; --danger-line: #6e2a25; --danger-ink: #ffc9c3;
+  --ok-50: #15301f; --ok-ink: #9de0b4; --shadow: 0 1px 2px rgba(0, 0, 0, 0.3); --overlay: rgba(0, 0, 0, 0.7);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+}
+h1, h2, h3 { color: var(--ink); font-family: var(--font-display); line-height: 1.25; margin: 0 0 0.5rem; text-wrap: balance; }
+h1 { font-size: 1.75rem; }
+h2 { font-size: 1.15rem; }
+h3 { font-size: 1.02rem; }
+p { margin: 0 0 0.75rem; }
+a { color: var(--teal-d); }
+.muted { color: var(--muted); }
+.small { font-size: 0.875rem; }
+.nowrap { white-space: nowrap; }
+.loading { padding: 3rem; text-align: center; color: var(--muted); }
+
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.main { padding-top: 1.5rem; padding-bottom: 2.5rem; min-height: 70vh; }
+
+/* Header */
+.topbar { background: var(--brand); color: var(--on-accent); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--brand); }
+.topbar-inner { display: flex; align-items: center; gap: 1rem; min-height: 60px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+.brand img { background: #ffffff; border-radius: 10px; padding: 3px; }
+.wordmark { font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; color: var(--on-accent); letter-spacing: -0.01em; }
+.wordmark span { color: var(--wordmark-accent); }
+.nav { display: flex; gap: 0.25rem; flex: 1; flex-wrap: wrap; }
+.nav a { color: var(--nav-text); text-decoration: none; padding: 0.4rem 0.7rem; border-radius: 8px; font-weight: 500; }
+.nav a:hover { background: var(--brand-2); color: var(--on-accent); }
+.nav a.active { background: var(--brand-2); color: var(--on-accent); box-shadow: inset 0 -2px 0 var(--gold); }
+.userbox { display: flex; align-items: center; gap: 0.5rem; }
+.user-name { font-weight: 600; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.topbar .btn-ghost { color: var(--on-accent); border-color: rgba(255, 255, 255, 0.35); background: transparent; }
+.topbar .btn-ghost:hover { background: var(--brand-2); }
+
+.syn-banner { background: var(--gold-50); border-bottom: 1px solid var(--gold-line); color: var(--gold-ink); padding: 0.5rem 0; font-size: 0.9rem; }
+.syn-hero { background: var(--gold-50); border: 1px solid var(--gold-line); color: var(--gold-ink); border-radius: var(--radius); padding: 0.85rem 1rem; margin-bottom: 1.25rem; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;
+  font: inherit; font-weight: 600; font-size: 0.95rem; line-height: 1.2;
+  padding: 0.6rem 1rem; border-radius: 10px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--ink); text-decoration: none; cursor: pointer;
+}
+.btn:hover { border-color: var(--teal); }
+.btn:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible {
+  outline: 3px solid var(--focus); outline-offset: 2px;
+}
+.btn-primary { background: var(--teal); border-color: var(--teal); color: var(--on-accent); }
+.btn-primary:hover { background: var(--teal-d); border-color: var(--teal-d); }
+.btn-ghost { background: transparent; }
+.btn-danger { color: var(--danger); border-color: var(--danger-line); }
+.btn-danger:hover { border-color: var(--danger); }
+.btn-sm { padding: 0.35rem 0.7rem; font-size: 0.85rem; }
+.btn-block { width: 100%; }
+.btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+.link-btn { background: none; border: 0; padding: 0; font: inherit; color: var(--teal-d); cursor: pointer; text-decoration: underline; }
+
+/* Cards and layout */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.25rem; margin-bottom: 1rem; }
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+.card-head h2 { margin: 0; }
+.two-col { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 1rem; align-items: start; }
+.two-col > .card, .stack > .card { margin-bottom: 0; }
+.stack { display: grid; gap: 1rem; }
+.page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.page-head p { margin: 0; }
+.head-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.back { display: inline-block; margin-bottom: 0.75rem; text-decoration: none; font-weight: 500; }
+.empty { text-align: center; padding: 2.5rem 1.25rem; }
+.empty-icon { font-size: 2.5rem; }
+.count { display: inline-block; min-width: 1.6rem; padding: 0 0.4rem; border-radius: 99px; background: var(--teal-50); color: var(--teal-d); font-size: 0.85rem; text-align: center; vertical-align: middle; }
+
+/* Hero / login */
+.hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 2rem; align-items: center; padding: 1rem 0 1.5rem; }
+.eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.78rem; font-weight: 700; color: var(--teal-d); }
+.hero h1 { font-size: 2.3rem; }
+.lead { font-size: 1.1rem; color: var(--muted); }
+.feature-list { list-style: none; padding: 0; margin: 1.25rem 0 0; display: grid; gap: 0.85rem; }
+.feature-list li { display: flex; gap: 0.75rem; align-items: flex-start; }
+.fi { font-size: 1.3rem; width: 2.4rem; height: 2.4rem; display: grid; place-items: center; background: var(--teal-50); border-radius: 10px; flex: none; }
+.auth-card { padding: 1.5rem; }
+.divider { display: flex; align-items: center; gap: 0.75rem; color: var(--muted); font-size: 0.85rem; margin: 1.25rem 0 1rem; }
+.divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+/* Forms */
+form label { display: block; font-weight: 600; font-size: 0.9rem; color: var(--ink); margin-bottom: 0.85rem; }
+input, select, textarea {
+  display: block; width: 100%; margin-top: 0.3rem; font: inherit; font-weight: 400; color: var(--text);
+  padding: 0.6rem 0.7rem; border: 1px solid var(--input-border); border-radius: 9px; background: var(--surface);
+}
+textarea { resize: vertical; }
+input[type="file"] { padding: 0.45rem; background: var(--bg); }
+input[type="checkbox"], input[type="radio"] { display: inline-block; width: auto; margin: 0 0.4rem 0 0; accent-color: var(--teal); }
+label.check { display: flex; align-items: center; font-weight: 500; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 0.85rem; align-items: end; }
+.row label.check { padding-bottom: 0.7rem; }
+fieldset { border: 0; padding: 0; margin: 0 0 0.75rem; }
+legend { font-weight: 700; color: var(--teal-d); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.6rem; padding: 0; }
+.form-card { max-width: 760px; }
+.form-actions { display: flex; gap: 0.5rem; }
+.severity legend { text-transform: none; letter-spacing: 0; font-size: 0.9rem; color: var(--ink); }
+.seg { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.35rem; }
+.seg-opt { margin: 0 !important; }
+.seg-opt input { position: absolute; opacity: 0; pointer-events: none; }
+.seg-opt span { display: flex; flex-direction: column; align-items: center; text-align: center; font-size: 0.72rem; font-weight: 500; padding: 0.45rem 0.2rem; border: 1px solid var(--input-border); border-radius: 9px; cursor: pointer; min-height: 100%; line-height: 1.2; }
+.seg-opt span b { font-size: 1rem; }
+.seg-opt input:checked + span { background: var(--teal); border-color: var(--teal); color: var(--on-accent); }
+.seg-opt input:focus-visible + span { outline: 3px solid var(--focus); }
+details.flags { border: 1px dashed var(--danger-line); background: var(--surface-alt); border-radius: 10px; padding: 0.6rem 0.8rem; margin-bottom: 1rem; }
+details.flags summary { cursor: pointer; font-weight: 600; color: var(--danger); }
+details.flags label.check { margin: 0.45rem 0 0; font-size: 0.9rem; color: var(--text); }
+.search { max-width: 320px; margin: 0; }
+.filters { display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap; margin-bottom: 0.75rem; }
+.filters label { font-weight: 600; font-size: 0.85rem; color: var(--ink); }
+.filters select { min-width: 180px; }
+
+/* Pets */
+.pets-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+.pet-card { display: flex; gap: 1rem; text-decoration: none; color: inherit; margin: 0; transition: transform 0.12s, border-color 0.12s; }
+.pet-card:hover { border-color: var(--teal); transform: translateY(-1px); }
+.pet-card h3 { margin-bottom: 0.15rem; }
+.pet-card p { margin-bottom: 0.5rem; }
+.avatar { width: 52px; height: 52px; flex: none; border-radius: 50%; background: var(--teal-50); display: grid; place-items: center; font-size: 1.6rem; border: 2px solid var(--surface); box-shadow: 0 0 0 2px var(--teal-50); }
+.avatar-lg { width: 68px; height: 68px; font-size: 2.1rem; }
+.pet-hero { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.pet-hero-body { flex: 1; min-width: 200px; }
+.pet-hero h1 { margin-bottom: 0.15rem; }
+.pet-hero p { margin: 0; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.chip { display: inline-block; background: var(--chip-bg); border: 1px solid var(--border); border-radius: 99px; padding: 0.15rem 0.6rem; font-size: 0.8rem; color: var(--ink); }
+.chip-sm { font-size: 0.75rem; padding: 0.05rem 0.5rem; }
+.chip-row { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+.chip-btn { font: inherit; font-size: 0.85rem; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); cursor: pointer; color: var(--ink); }
+.chip-btn.active { background: var(--teal); border-color: var(--teal); color: var(--on-accent); }
+.badge { display: inline-block; vertical-align: middle; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.12rem 0.45rem; border-radius: 6px; background: var(--teal-50); color: var(--teal-d); }
+.badge-syn { background: var(--gold); color: var(--on-gold); }
+.badge-new { background: var(--teal); color: var(--on-accent); }
+.tag { display: inline-block; font-size: 0.75rem; font-weight: 600; padding: 0.1rem 0.5rem; border-radius: 6px; background: var(--teal-50); color: var(--teal-d); }
+.tag-record { background: var(--navy-50); color: var(--ink); }
+.tag-profile { background: var(--gold-50); color: var(--gold-ink); }
+.tag-act { background: var(--navy-50); color: var(--ink); white-space: nowrap; }
+.sev { display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 0.1rem 0.45rem; border-radius: 6px; }
+.sev-low { background: var(--ok-50); color: var(--ok-ink); }
+.sev-mid { background: var(--gold-50); color: var(--gold-ink); }
+.sev-high { background: var(--danger-50); color: var(--danger); }
+.flag-text { color: var(--danger); font-weight: 600; margin-top: 0.2rem; }
+
+/* Tabs */
+.tabs { display: flex; gap: 0.25rem; overflow-x: auto; border-bottom: 1px solid var(--border); margin: 0 0 1rem; scrollbar-width: thin; }
+.tabs a { padding: 0.65rem 0.9rem; text-decoration: none; color: var(--muted); font-weight: 600; white-space: nowrap; border-bottom: 3px solid transparent; }
+.tabs a:hover { color: var(--ink); }
+.tabs a.active { color: var(--ink); border-bottom-color: var(--teal); }
+
+/* Facts / lists */
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem 1rem; margin: 0 0 0.75rem; }
+.facts dt { font-size: 0.78rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+.facts dd { margin: 0; overflow-wrap: anywhere; }
+.quick { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.list { list-style: none; margin: 0; padding: 0; }
+.list-item { display: flex; gap: 0.85rem; padding: 0.8rem 0; border-top: 1px solid var(--border); }
+.list-item:first-child { border-top: 0; }
+.li-date { flex: none; width: 92px; font-size: 0.85rem; font-weight: 600; color: var(--ink); }
+.li-body { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.li-body p { margin: 0.3rem 0; }
+.plain { padding-left: 1.1rem; margin: 0; }
+.plain li { margin-bottom: 0.35rem; }
+
+/* Timeline */
+.tl-month { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 1.25rem 0 0.5rem; }
+.timeline { list-style: none; margin: 0; padding: 0 0 0 1.1rem; border-left: 2px solid var(--border); }
+.tl { position: relative; display: flex; gap: 0.85rem; padding: 0 0 1rem 0.6rem; }
+.tl-dot { position: absolute; left: -1.62rem; top: 0.3rem; width: 14px; height: 14px; border-radius: 50%; background: var(--teal); border: 3px solid var(--surface); box-shadow: 0 0 0 1px var(--teal); }
+.tl-record .tl-dot { background: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+.tl-profile .tl-dot { background: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+.tl-date { flex: none; width: 92px; font-size: 0.85rem; font-weight: 600; color: var(--ink); }
+.tl-body { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.tl-title { font-weight: 500; margin-top: 0.15rem; }
+.timeline.compact .tl { padding-bottom: 0.75rem; }
+
+/* Alerts */
+.alert { border-radius: var(--radius); padding: 0.85rem 1rem; margin-bottom: 1rem; border: 1px solid; }
+.alert-info { background: var(--teal-50); border-color: var(--teal-line); color: var(--teal-ink); }
+.alert-urgent { background: var(--danger-50); border-color: var(--danger-line); color: var(--danger-ink); }
+
+/* Guidance */
+.guidance { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
+.g-card { margin: 0; border-top: 4px solid var(--teal); display: flex; flex-direction: column; }
+.g-card.pri-attention { border-top-color: var(--gold); }
+.g-card.pri-urgent { border-top-color: var(--danger); background: var(--surface-alt); }
+.g-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+.pri { font-size: 0.75rem; font-weight: 700; color: var(--teal-d); text-transform: uppercase; letter-spacing: 0.05em; }
+.pri-attention .pri { color: var(--gold-ink); }
+.pri-urgent .pri { color: var(--danger); }
+.g-card ul { padding-left: 1.1rem; margin: 0 0 0.75rem; }
+.g-card li { margin-bottom: 0.3rem; }
+.g-card details { margin-bottom: 0.75rem; }
+.g-card details summary { cursor: pointer; font-weight: 600; color: var(--ink); font-size: 0.9rem; }
+.g-uses { display: flex; flex-wrap: wrap; gap: 0.3rem; align-items: center; margin-top: auto; padding-top: 0.6rem; border-top: 1px solid var(--border); }
+.g-sources { margin-top: 0.5rem; }
+
+/* Tables */
+.table-wrap { overflow-x: auto; }
+table.data { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+table.data th { text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); padding: 0.5rem; border-bottom: 2px solid var(--border); }
+table.data td { padding: 0.55rem 0.5rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+table.data td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+table.kv { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+table.kv th { text-align: left; width: 38%; color: var(--muted); font-weight: 600; padding: 0.35rem 0.5rem 0.35rem 0; vertical-align: top; }
+table.kv td { padding: 0.35rem 0; }
+.pager { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-top: 1rem; }
+
+/* Stats */
+.stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.75rem; margin-bottom: 1rem; }
+.stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; box-shadow: var(--shadow); }
+.stat-n { font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; color: var(--ink); font-variant-numeric: tabular-nums; }
+.stat-l { font-size: 0.82rem; color: var(--muted); }
+
+/* Summary */
+.summary-actions { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.summary { max-width: 860px; }
+.summary-head { display: flex; gap: 0.75rem; align-items: center; border-bottom: 2px solid var(--ink); padding-bottom: 0.75rem; margin-bottom: 1rem; }
+.summary-head h2 { margin: 0; font-size: 1.35rem; }
+.summary-head p { margin: 0; }
+.summary section { margin-bottom: 1.1rem; }
+.summary h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--teal-d); border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; }
+.summary-foot { border-top: 1px solid var(--border); padding-top: 0.6rem; margin: 0; }
+
+/* Footer & toasts */
+.footer { border-top: 1px solid var(--border); background: var(--surface); padding: 1.25rem 0; font-size: 0.85rem; color: var(--muted); }
+.footer p { margin: 0 0 0.4rem; }
+.toasts { position: fixed; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%); display: grid; gap: 0.5rem; z-index: 50; width: min(440px, calc(100% - 32px)); }
+.toast { background: var(--brand); color: var(--on-accent); padding: 0.75rem 1rem; border-radius: 10px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18); transition: opacity 0.4s, transform 0.4s; }
+.toast.error { background: #b3261e; }
+.preview { position: fixed; inset: 0; background: var(--overlay); display: grid; place-items: center; z-index: 60; padding: 16px; }
+.preview-box { background: var(--surface); border-radius: var(--radius); padding: 1rem; max-width: min(900px, 100%); max-height: 90vh; overflow: auto; }
+.preview-box img { display: block; max-width: 100%; height: auto; border-radius: 8px; }
+.fi svg { color: var(--teal-d); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+.toast.out { opacity: 0; transform: translateY(8px); }
+
+/* Responsive */
+@media (max-width: 860px) {
+  .hero, .two-col { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 1.85rem; }
+}
+@media (max-width: 560px) {
+  h1 { font-size: 1.45rem; }
+  .row { grid-template-columns: 1fr; }
+  .facts, .quick { grid-template-columns: 1fr; }
+  .nav { order: 3; flex-basis: 100%; padding-bottom: 0.5rem; }
+  .userbox { margin-left: auto; }
+  .user-name { max-width: 110px; }
+  .seg-opt span { font-size: 0.62rem; }
+  .li-date, .tl-date { width: 72px; font-size: 0.78rem; }
+  .guidance { grid-template-columns: 1fr; }
+  .card { padding: 1rem; }
+}
+
+/* Print: only the vet summary */
+@media print {
+  body { background: #ffffff; color: #1d2433; }
+  .topbar, .syn-banner, .footer, .back, .pet-hero, .tabs, .no-print, .toasts { display: none !important; }
+  .main { padding: 0; }
+  .card { box-shadow: none; border: 0; padding: 0; }
+  .summary { max-width: none; }
+  a { color: inherit; text-decoration: none; }
+}
+
+</style>
+</head>
+<body>
+<div id="app"><p class="loading">Loading PetLumen…</p></div>
+<div id="toasts" class="toasts" aria-live="polite"></div>
+<script>
+/*
+ * PetLumen data layer.
+ * All app data lives in one object saved to IndexedDB so changes survive a page
+ * refresh. Uploaded record files are stored in a separate object store.
+ */
+window.PL = window.PL || {};
+
+(function (PL) {
+  'use strict';
+
+  // ---------- Utilities ----------
+  const pad = (n) => String(n).padStart(2, '0');
+  const toISODate = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const parseDate = (s) => {
+    const [y, m, d] = String(s).split('-').map(Number);
+    return new Date(y, m - 1, d);
+  };
+  // Whole days from a to b (b - a), using local calendar dates.
+  const daysBetween = (a, b) => Math.round((parseDate(b) - parseDate(a)) / 86400000);
+  const fmtDate = (s) =>
+    s ? parseDate(s).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+  const fmtTs = (ts) =>
+    ts ? new Date(ts).toLocaleString(undefined, { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }) : '';
+  const uid = (prefix) => `${prefix}_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 7)}`;
+
+  PL.util = { toISODate, parseDate, daysBetween, fmtDate, fmtTs, uid, today: () => toISODate(new Date()) };
+
+  // ---------- Shared catalog ----------
+  PL.catalog = {
+    dogBreeds: [
+      ['Labrador Retriever', 'large'], ['Golden Retriever', 'large'], ['French Bulldog', 'small'],
+      ['German Shepherd', 'large'], ['Standard Poodle', 'medium'], ['Toy Poodle', 'toy'],
+      ['Beagle', 'medium'], ['Dachshund', 'small'], ['Bernese Mountain Dog', 'giant'],
+      ['Great Dane', 'giant'], ['Mixed breed', 'medium'], ['Australian Shepherd', 'medium'],
+      ['Cavalier King Charles Spaniel', 'small'], ['Chihuahua', 'toy'], ['Boxer', 'large'],
+      ['Shih Tzu', 'small'], ['Pembroke Welsh Corgi', 'medium'], ['Siberian Husky', 'large'],
+      ['Goldendoodle', 'large'], ['Yorkshire Terrier', 'toy'], ['Border Collie', 'medium'],
+      ['Miniature Schnauzer', 'small'], ['Newfoundland', 'giant'], ['Cocker Spaniel', 'medium'],
+    ],
+    catBreeds: [
+      ['Domestic Shorthair', 'small'], ['Domestic Longhair', 'small'], ['Siamese', 'small'],
+      ['Maine Coon', 'medium'], ['Ragdoll', 'medium'], ['British Shorthair', 'small'],
+    ],
+    sizes: { toy: 'Toy breed', small: 'Small breed', medium: 'Medium breed', large: 'Large breed', giant: 'Giant breed' },
+    recordTypes: ['Vaccination', 'Wellness exam', 'Medication', 'Lab result', 'Dental', 'Surgery / procedure', 'Other'],
+    symptomCategories: [
+      'Digestive', 'Skin & coat', 'Energy & behavior', 'Eyes & ears', 'Mobility',
+      'Respiratory', 'Urinary', 'Dental', 'Eating & drinking', 'Other',
+    ],
+    severities: ['Barely noticeable', 'Mild', 'Moderate', 'Significant', 'Severe'],
+    durations: ['Less than a day', '1–2 days', '3–7 days', 'More than a week', 'Comes and goes'],
+    redFlags: [
+      'Trouble breathing',
+      'Collapse or unable to stand',
+      'Seizure',
+      'Suspected poisoning or toxin ingestion',
+      'Repeated vomiting or vomiting blood',
+      'Swollen belly or retching with nothing coming up',
+      'Pale, gray, or blue gums',
+      'Major injury or heavy bleeding',
+    ],
+    actions: {
+      account_created: 'Account created',
+      profile_created: 'Profile created',
+      profile_updated: 'Profile updated',
+      record_added: 'Record added',
+      record_uploaded: 'Record uploaded',
+      symptom_logged: 'Symptom logged',
+      guidance_requested: 'Guidance requested',
+      vet_summary_prepared: 'Vet summary prepared',
+    },
+  };
+
+  // ---------- Persistence (IndexedDB) ----------
+  // The whole state is kept in memory and saved as one object. IndexedDB is
+  // used instead of localStorage because the synthetic dataset alone is ~4 MB.
+  const DB_NAME = 'petlumen';
+  const SCHEMA = 1;
+  let db = null;
+  let idb = null;
+
+  function openIdb() {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open(DB_NAME, 1);
+      req.onupgradeneeded = () => {
+        req.result.createObjectStore('state');
+        req.result.createObjectStore('files');
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  function tx(storeName, mode, fn) {
+    if (!idb) return Promise.reject(new Error('Browser storage is not available'));
+    return new Promise((resolve, reject) => {
+      const t = idb.transaction(storeName, mode);
+      const req = fn(t.objectStore(storeName));
+      t.oncomplete = () => resolve(req && req.result);
+      t.onerror = () => reject(t.error);
+      t.onabort = () => reject(t.error);
+    });
+  }
+
+  // The object is cloned synchronously when put() is called, so the saved
+  // snapshot always matches the state at the moment of the change.
+  let pendingWrites = 0;
+  function persist() {
+    if (!idb) return Promise.resolve();
+    pendingWrites++;
+    return tx('state', 'readwrite', (s) => s.put(db, 'db'))
+      .catch((e) => {
+        console.error('PetLumen: could not save', e);
+        if (PL.ui) PL.ui.toast('Could not save: browser storage is full or blocked.', 'error');
+      })
+      .finally(() => pendingWrites--);
+  }
+  window.addEventListener('beforeunload', (e) => {
+    if (pendingWrites > 0) e.preventDefault();
+  });
+
+  const byId = (list, id) => list.find((x) => x.id === id) || null;
+  const byDateDesc = (a, b) => b.date.localeCompare(a.date) || b.createdAt.localeCompare(a.createdAt);
+
+  function log(userId, petId, action, detail) {
+    db.activity.push({ id: uid('a'), userId, petId: petId || null, action, detail: detail || '', ts: new Date().toISOString() });
+  }
+
+  // Avoid logging the same "view" interaction repeatedly when a tab is re-opened.
+  function logOnce(userId, petId, action, detail, windowMs) {
+    const cutoff = Date.now() - windowMs;
+    for (let i = db.activity.length - 1; i >= 0; i--) {
+      const a = db.activity[i];
+      if (Date.parse(a.ts) < cutoff) break;
+      if (a.userId === userId && a.petId === petId && a.action === action) return false;
+    }
+    log(userId, petId, action, detail);
+    persist();
+    return true;
+  }
+
+  const PET_FIELDS = [
+    'name', 'species', 'breed', 'size', 'sex', 'neutered', 'birthDate', 'weightLb',
+    'allergies', 'medications', 'conditions', 'clinic', 'microchip',
+  ];
+  const FIELD_LABELS = {
+    name: 'name', species: 'species', breed: 'breed', size: 'size', sex: 'sex', neutered: 'spay/neuter status',
+    birthDate: 'birth date', weightLb: 'weight', allergies: 'allergies', medications: 'medications',
+    conditions: 'conditions', clinic: 'clinic', microchip: 'microchip',
+  };
+
+  PL.store = {
+    // If the browser blocks storage (private mode, blocked site data), the app
+    // still runs from memory and shows a notice that changes will not be kept.
+    async init() {
+      let saved = null;
+      try {
+        idb = await openIdb();
+        saved = await tx('state', 'readonly', (s) => s.get('db'));
+      } catch (e) {
+        console.warn('PetLumen: browser storage unavailable, running in memory', e);
+        idb = null;
+      }
+      db = saved && saved.schema === SCHEMA ? saved : null;
+      if (!db) {
+        db = PL.seed.build(new Date());
+        await persist();
+      }
+      return db;
+    },
+    get saving() {
+      return !!idb;
+    },
+    async reset() {
+      await tx('files', 'readwrite', (s) => s.clear()).catch(() => {});
+      db = PL.seed.build(new Date());
+      await persist();
+    },
+    get data() {
+      return db;
+    },
+
+    // Session
+    signIn(userId) {
+      db.session = { userId };
+      persist();
+    },
+    signOut() {
+      db.session = { userId: null };
+      persist();
+    },
+    currentUser() {
+      return db.session && db.session.userId ? byId(db.users, db.session.userId) : null;
+    },
+
+    // Queries
+    user: (id) => byId(db.users, id),
+    pet: (id) => byId(db.pets, id),
+    findUserByEmail: (email) => db.users.find((u) => u.email.toLowerCase() === email.toLowerCase()) || null,
+    petsOf: (userId) => db.pets.filter((p) => p.ownerId === userId),
+    recordsOf: (petId) => db.records.filter((r) => r.petId === petId).sort(byDateDesc),
+    symptomsOf: (petId) => db.symptoms.filter((s) => s.petId === petId).sort(byDateDesc),
+    activityOf: (userId) => db.activity.filter((a) => a.userId === userId).sort((a, b) => b.ts.localeCompare(a.ts)),
+
+    // Mutations — each one records a trackable interaction in the activity history.
+    createUser({ name, email }) {
+      const user = { id: uid('u'), name, email, synthetic: false, createdAt: new Date().toISOString() };
+      db.users.push(user);
+      log(user.id, null, 'account_created', '');
+      db.session = { userId: user.id };
+      persist();
+      return user;
+    },
+
+    createPet(ownerId, fields) {
+      const now = new Date().toISOString();
+      const pet = { id: uid('p'), ownerId, vetQuestions: '', createdAt: now, updatedAt: now };
+      PET_FIELDS.forEach((k) => (pet[k] = fields[k]));
+      db.pets.push(pet);
+      log(ownerId, pet.id, 'profile_created', `${pet.name} added`);
+      persist();
+      return pet;
+    },
+
+    updatePet(petId, userId, fields) {
+      const pet = byId(db.pets, petId);
+      const changed = PET_FIELDS.filter((k) => fields[k] !== undefined && fields[k] !== pet[k]);
+      if (!changed.length) return [];
+      changed.forEach((k) => (pet[k] = fields[k]));
+      pet.updatedAt = new Date().toISOString();
+      log(userId, petId, 'profile_updated', `Changed ${changed.map((k) => FIELD_LABELS[k]).join(', ')}`);
+      persist();
+      return changed;
+    },
+
+    saveVetQuestions(petId, text) {
+      byId(db.pets, petId).vetQuestions = text;
+      persist();
+    },
+
+    addRecord(petId, userId, fields, attachment) {
+      const rec = { id: fields.id || uid('r'), petId, createdAt: new Date().toISOString(), attachment: attachment || null };
+      ['date', 'type', 'title', 'clinic', 'notes'].forEach((k) => (rec[k] = fields[k]));
+      db.records.push(rec);
+      if (attachment) log(userId, petId, 'record_uploaded', `${rec.type}: ${rec.title} (${attachment.name})`);
+      else log(userId, petId, 'record_added', `${rec.type}: ${rec.title}`);
+      persist();
+      return rec;
+    },
+
+    addSymptom(petId, userId, fields) {
+      const s = { id: uid('s'), petId, createdAt: new Date().toISOString() };
+      ['date', 'category', 'severity', 'description', 'duration', 'redFlags'].forEach((k) => (s[k] = fields[k]));
+      db.symptoms.push(s);
+      log(userId, petId, 'symptom_logged', `${s.category} (severity ${s.severity}/5): ${s.description}`);
+      persist();
+      return s;
+    },
+
+    logGuidance(petId, userId, cardCount) {
+      return logOnce(userId, petId, 'guidance_requested', `${cardCount} guidance items shown`, 2 * 60 * 1000);
+    },
+    logVetSummary(petId, userId) {
+      return logOnce(userId, petId, 'vet_summary_prepared', 'Visit summary opened', 2 * 60 * 1000);
+    },
+  };
+
+  // ---------- Uploaded record files ----------
+  PL.files = {
+    put: (id, file) => tx('files', 'readwrite', (s) => s.put(file, id)),
+    get: (id) => tx('files', 'readonly', (s) => s.get(id)),
+  };
+})(window.PL);
+
+</script>
+<script>
+/*
+ * Synthetic dataset for PetLumen prototype testing.
+ *
+ * Builds 1,000 clearly labeled synthetic owner accounts ("Synthetic Owner 0001"…,
+ * @example.test emails, synthetic: true) with linked pet profiles, records,
+ * symptom entries and activity history. These are generated test data and must
+ * never be presented as real customers.
+ *
+ * Also builds one non-synthetic "Demo Owner" account with a sample puppy so the
+ * five-minute demo has earlier observations to show on the timeline.
+ */
+(function (PL) {
+  'use strict';
+
+  const DAY = 86400000;
+  const SYNTHETIC_OWNERS = 1000;
+
+  // Small deterministic PRNG so every fresh seed produces the same dataset shape.
+  function mulberry32(a) {
+    return function () {
+      a |= 0;
+      a = (a + 0x6d2b79f5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  const PET_NAMES = [
+    'Biscuit', 'Luna', 'Milo', 'Bella', 'Cooper', 'Daisy', 'Rocky', 'Nala', 'Teddy', 'Pepper',
+    'Charlie', 'Willow', 'Bear', 'Olive', 'Ziggy', 'Rosie', 'Finn', 'Hazel', 'Moose', 'Juniper',
+    'Scout', 'Penny', 'Murphy', 'Clover', 'Bentley', 'Ginger', 'Ollie', 'Maple', 'Tucker', 'Poppy',
+    'Koda', 'Sadie', 'Winston', 'Mochi', 'Louie', 'Pickles', 'Bruno', 'Honey', 'Gus', 'Kiwi',
+  ];
+  const CLINICS = [
+    'Riverbend Animal Hospital', 'Oak Street Veterinary', 'Northside Pet Clinic', 'Harbor View Vets',
+    'Maple Grove Animal Care', 'Summit Veterinary Center', 'Prairie Paws Clinic', 'Cedar Lane Vet',
+  ];
+  const SYMPTOMS = [
+    ['Digestive', 'Soft stool after switching food', 2], ['Digestive', 'Vomited once after eating quickly', 2],
+    ['Digestive', 'Diarrhea twice today', 3], ['Eating & drinking', 'Skipped breakfast, ate dinner normally', 1],
+    ['Eating & drinking', 'Drinking more water than usual', 2], ['Skin & coat', 'Scratching behind ears', 2],
+    ['Skin & coat', 'Red patch on belly', 2], ['Skin & coat', 'Dry, flaky skin', 1],
+    ['Energy & behavior', 'More tired than usual after walk', 2], ['Energy & behavior', 'Restless at night', 1],
+    ['Energy & behavior', 'Hiding more than usual', 2], ['Eyes & ears', 'Watery left eye', 1],
+    ['Eyes & ears', 'Head shaking and ear odor', 3], ['Mobility', 'Limping on front right leg', 3],
+    ['Mobility', 'Stiff getting up in the morning', 2], ['Respiratory', 'Occasional sneezing', 1],
+    ['Respiratory', 'Honking cough after playing', 3], ['Urinary', 'Accidents indoors after being house-trained', 2],
+    ['Dental', 'Bad breath', 1], ['Dental', 'Chewing on one side', 2],
+  ];
+  const ADULT_LB = { toy: 6, small: 18, medium: 40, large: 70, giant: 120 };
+  const GROWTH_MONTHS = { toy: 9, small: 10, medium: 12, large: 15, giant: 18 };
+
+  function build(nowDate) {
+    const rnd = mulberry32(485);
+    const T = nowDate.getTime();
+    const pick = (arr) => arr[Math.floor(rnd() * arr.length)];
+    const int = (a, b) => a + Math.floor(rnd() * (b - a + 1));
+    const dateOf = (t) => PL.util.toISODate(new Date(t));
+    const tsOf = (t) => new Date(Math.min(t, T - 60000)).toISOString();
+    const C = PL.catalog;
+
+    const db = {
+      schema: 1,
+      seededAt: nowDate.toISOString(),
+      session: { userId: null },
+      users: [], pets: [], records: [], symptoms: [], activity: [],
+    };
+    let seq = 0;
+    const act = (userId, petId, action, detail, t) =>
+      db.activity.push({ id: `a_seed${++seq}`, userId, petId, action, detail, ts: tsOf(t) });
+
+    function addRecord(userId, pet, t, type, title, clinic, notes, created) {
+      // About a quarter of synthetic records simulate an uploaded clinic file (metadata only).
+      const upload = pet.synthetic && rnd() < 0.25;
+      const attachment = upload ? { name: `${type.toLowerCase().replace(/\W+/g, '-')}-${dateOf(t)}.pdf`, size: int(40, 900) * 1024, type: 'application/pdf', synthetic: true } : null;
+      const rec = { id: `r_seed${++seq}`, petId: pet.id, date: dateOf(t), type, title, clinic, notes, attachment };
+      const logged = Math.max(t, created) + int(1, 30) * 3600000;
+      rec.createdAt = tsOf(logged);
+      db.records.push(rec);
+      if (upload) act(userId, pet.id, 'record_uploaded', `${type}: ${title} (${attachment.name})`, logged);
+      else act(userId, pet.id, 'record_added', `${type}: ${title}`, logged);
+    }
+
+    function addSymptom(userId, pet, t, category, description, severity, duration, redFlags) {
+      const logged = t + int(1, 10) * 3600000;
+      db.symptoms.push({
+        id: `s_seed${++seq}`, petId: pet.id, date: dateOf(t), category, severity, description, duration,
+        redFlags: redFlags || [], createdAt: tsOf(logged),
+      });
+      act(userId, pet.id, 'symptom_logged', `${category} (severity ${severity}/5): ${description}`, logged);
+    }
+
+    function makePet(userId, n, k, joined) {
+      const r = rnd();
+      let species, breed, size, ageDays;
+      // Weighted toward young dogs to reflect the first-time puppy owner segment.
+      if (r < 0.55) {
+        species = 'dog'; [breed, size] = pick(C.dogBreeds); ageDays = int(56, 365);
+      } else if (r < 0.8) {
+        species = 'dog'; [breed, size] = pick(C.dogBreeds); ageDays = int(366, 14 * 365);
+      } else {
+        species = 'cat'; [breed, size] = pick(C.catBreeds); ageDays = rnd() < 0.25 ? int(56, 365) : int(366, 16 * 365);
+      }
+      const birth = T - ageDays * DAY;
+      const ageMonths = ageDays / 30.44;
+      const young = ageMonths < 12;
+      const created = Math.min(Math.max(joined, birth + 49 * DAY) + int(0, 5) * DAY, T - DAY);
+
+      let weight;
+      if (species === 'cat') weight = (size === 'medium' ? 14 : 10) * Math.min(1, 0.2 + ageMonths / 12);
+      else weight = ADULT_LB[size] * Math.min(1, 0.15 + (0.85 * ageMonths) / GROWTH_MONTHS[size]);
+      weight = Math.round(weight * (0.85 + rnd() * 0.3) * 10) / 10;
+
+      const clinic = pick(CLINICS);
+      const pet = {
+        id: `p_syn${n}_${k + 1}`, ownerId: userId, synthetic: true,
+        name: pick(PET_NAMES), species, breed, size,
+        sex: rnd() < 0.5 ? 'female' : 'male',
+        neutered: young ? rnd() < 0.15 : rnd() < 0.85,
+        birthDate: dateOf(birth), weightLb: weight,
+        allergies: rnd() < 0.1 ? pick(['Chicken', 'Beef', 'Flea bites', 'Grass pollen']) : '',
+        medications: species === 'dog' && rnd() < 0.6 ? 'Monthly heartworm and flea/tick preventive'
+          : species === 'cat' && rnd() < 0.3 ? 'Monthly topical flea preventive' : '',
+        conditions: !young && rnd() < 0.12 ? pick(['Seasonal allergies', 'Arthritis', 'Sensitive stomach']) : '',
+        clinic, microchip: rnd() < 0.5 ? `SYN-${n}${k}` : '',
+        vetQuestions: '', createdAt: tsOf(created), updatedAt: tsOf(created),
+      };
+      db.pets.push(pet);
+      act(userId, pet.id, 'profile_created', `${pet.name} added`, created);
+
+      // Records
+      const vaxName = species === 'dog' ? 'DHPP' : 'FVRCP';
+      if (young) {
+        [8, 12, 16].forEach((wk) => {
+          const t = birth + wk * 7 * DAY;
+          if (t <= T - DAY) addRecord(userId, pet, t, 'Vaccination', `${wk}-week ${vaxName} vaccine`, clinic, 'Puppy/kitten series dose.', created);
+        });
+        if (ageDays > 112 && rnd() < 0.7) addRecord(userId, pet, birth + int(112, Math.min(ageDays - 1, 140)) * DAY, 'Vaccination', 'Rabies vaccine', clinic, '', created);
+      } else {
+        const exam = T - int(20, 420) * DAY;
+        addRecord(userId, pet, exam, 'Wellness exam', 'Annual wellness exam', clinic, 'Weight and body condition reviewed.', created);
+        if (rnd() < 0.8) addRecord(userId, pet, exam, 'Vaccination', `${vaxName} booster`, clinic, '', created);
+        if (rnd() < 0.2) addRecord(userId, pet, T - int(30, 300) * DAY, 'Dental', 'Dental cleaning', clinic, '', created);
+        if (rnd() < 0.15) addRecord(userId, pet, T - int(30, 300) * DAY, 'Lab result', 'Routine bloodwork', clinic, 'Results within normal range per clinic.', created);
+      }
+
+      // Symptoms (logged after the profile existed)
+      const count = pick([0, 1, 1, 2, 2, 3, 4]);
+      for (let i = 0; i < count; i++) {
+        const [cat, desc, base] = pick(SYMPTOMS);
+        const sev = Math.max(1, Math.min(4, base + int(-1, 1)));
+        addSymptom(userId, pet, created + rnd() * (T - created), cat, desc, sev, pick(C.durations));
+      }
+
+      // Guidance views and profile updates
+      for (let i = int(0, 3); i > 0; i--) act(userId, pet.id, 'guidance_requested', 'Wellness guidance viewed', created + rnd() * (T - created));
+      if (rnd() < 0.3) act(userId, pet.id, 'vet_summary_prepared', 'Visit summary opened', created + rnd() * (T - created));
+      for (let i = int(0, 2); i > 0; i--) act(userId, pet.id, 'profile_updated', `Changed ${pick(['weight', 'medications', 'clinic', 'allergies'])}`, created + rnd() * (T - created));
+    }
+
+    for (let i = 1; i <= SYNTHETIC_OWNERS; i++) {
+      const n = String(i).padStart(4, '0');
+      const userId = `u_syn${n}`;
+      const joined = T - int(20, 360) * DAY;
+      db.users.push({
+        id: userId, name: `Synthetic Owner ${n}`, email: `synthetic.owner${n}@example.test`,
+        synthetic: true, createdAt: tsOf(joined),
+      });
+      act(userId, null, 'account_created', 'Synthetic seed account', joined);
+      const pets = rnd() < 0.7 ? 1 : rnd() < 0.83 ? 2 : 3;
+      for (let k = 0; k < pets; k++) makePet(userId, n, k, joined);
+    }
+
+    // ---- Demo owner with one sample puppy ----
+    const demoJoined = T - 45 * DAY;
+    const demo = { id: 'u_demo', name: 'Demo Owner', email: 'demo@petlumen.test', synthetic: false, demo: true, createdAt: tsOf(demoJoined) };
+    db.users.push(demo);
+    act(demo.id, null, 'account_created', '', demoJoined);
+    const birth = T - 98 * DAY;
+    const maple = {
+      id: 'p_demo_maple', ownerId: demo.id, sample: true, name: 'Maple', species: 'dog',
+      breed: 'Golden Retriever', size: 'large', sex: 'female', neutered: false,
+      birthDate: dateOf(birth), weightLb: 22,
+      allergies: '', medications: 'Monthly heartworm and flea/tick preventive', conditions: '',
+      clinic: 'Lakeside Veterinary Clinic (sample)', microchip: '',
+      vetQuestions: 'Is her soft stool normal after a food change?\nWhen should we schedule her spay?',
+      createdAt: tsOf(T - 44 * DAY), updatedAt: tsOf(T - 44 * DAY),
+    };
+    db.pets.push(maple);
+    act(demo.id, maple.id, 'profile_created', 'Maple added', T - 44 * DAY);
+    addRecord(demo.id, maple, birth + 56 * DAY, 'Vaccination', '8-week DHPP vaccine', maple.clinic, 'First puppy series dose. Dewormed same visit.', T - 44 * DAY);
+    addRecord(demo.id, maple, birth + 84 * DAY, 'Vaccination', '12-week DHPP vaccine', maple.clinic, 'Second dose. Next dose due around 16 weeks.', T - 44 * DAY);
+    addSymptom(demo.id, maple, T - 12 * DAY, 'Digestive', 'Soft stool two days after switching to new puppy food', 2, '1–2 days');
+    addSymptom(demo.id, maple, T - 5 * DAY, 'Skin & coat', 'Scratching behind left ear after bath', 2, '3–7 days');
+    act(demo.id, maple.id, 'guidance_requested', 'Wellness guidance viewed', T - 5 * DAY + 3 * 3600000);
+
+    return db;
+  }
+
+  PL.seed = { build, SYNTHETIC_OWNERS };
+})(window.PL);
+
+</script>
+<script>
+/*
+ * Wellness Guidance engine.
+ *
+ * Rule-based (no AI-generated answers): each guidance item states which profile
+ * details it used and lists the public source it summarizes, so owners can see
+ * where information comes from. Guidance is general information to discuss with
+ * a veterinarian — it never diagnoses or recommends treatment.
+ */
+(function (PL) {
+  'use strict';
+  const U = PL.util;
+
+  const SOURCES = {
+    canineVax: { name: '2022 AAHA Canine Vaccination Guidelines', org: 'American Animal Hospital Association', url: 'https://www.aaha.org/resources/2022-aaha-canine-vaccination-guidelines/' },
+    felineVax: { name: '2020 AAHA/AAFP Feline Vaccination Guidelines', org: 'American Association of Feline Practitioners', url: 'https://catvets.com/' },
+    canineLife: { name: '2019 AAHA Canine Life Stage Guidelines', org: 'American Animal Hospital Association', url: 'https://www.aaha.org/' },
+    felineLife: { name: '2021 AAHA/AAFP Feline Life Stage Guidelines', org: 'American Association of Feline Practitioners', url: 'https://catvets.com/' },
+    dental: { name: '2019 AAHA Dental Care Guidelines for Dogs and Cats', org: 'American Animal Hospital Association', url: 'https://www.aaha.org/' },
+    nutrition: { name: 'WSAVA Global Nutrition Guidelines', org: 'World Small Animal Veterinary Association', url: 'https://wsava.org/global-guidelines/global-nutrition-guidelines/' },
+    heartworm: { name: 'Heartworm prevention recommendations', org: 'American Heartworm Society', url: 'https://www.heartwormsociety.org/' },
+    parasites: { name: 'Parasite control recommendations', org: 'Companion Animal Parasite Council', url: 'https://capcvet.org/' },
+    socialization: { name: 'Position Statement on Puppy Socialization', org: 'American Veterinary Society of Animal Behavior', url: 'https://avsab.org/' },
+    poison: { name: 'Animal Poison Control Center', org: 'ASPCA', url: 'https://www.aspca.org/pet-care/animal-poison-control' },
+    avma: { name: 'Pet owner resources', org: 'American Veterinary Medical Association', url: 'https://www.avma.org/' },
+    log: { name: "Your pet's PetLumen profile and log", org: 'Owner-entered information', url: null },
+  };
+
+  function ageInfo(birthDate, today) {
+    const days = U.daysBetween(birthDate, today || U.today());
+    const weeks = Math.floor(days / 7);
+    const months = Math.floor(days / 30.44);
+    const years = Math.floor(days / 365.25);
+    let label;
+    if (days < 0) label = 'Birth date is in the future';
+    else if (weeks < 16) label = `${weeks} week${weeks === 1 ? '' : 's'}`;
+    else if (months < 24) label = `${months} months`;
+    else label = `${years} years`;
+    return { days, weeks, months, years, label };
+  }
+
+  function lifeStage(pet, age) {
+    if (pet.species === 'cat') return age.months < 12 ? 'Kitten' : age.years >= 10 ? 'Senior' : 'Adult';
+    const big = pet.size === 'large' || pet.size === 'giant';
+    if (age.months < (big ? 15 : 12)) return 'Puppy';
+    return age.years >= (big ? 6 : 8) ? 'Senior' : 'Adult';
+  }
+
+  const PRIORITY_ORDER = { urgent: 0, attention: 1, info: 2 };
+
+  function build(pet, records, symptoms, today) {
+    today = today || U.today();
+    const age = ageInfo(pet.birthDate, today);
+    const stage = lifeStage(pet, age);
+    const dog = pet.species === 'dog';
+    const young = stage === 'Puppy' || stage === 'Kitten';
+    const baby = dog ? 'puppy' : 'kitten';
+    const vax = records.filter((r) => r.type === 'Vaccination');
+    const lastVax = vax[0] || null;
+    const lastVisit = records.find((r) => r.type === 'Wellness exam' || r.type === 'Vaccination') || null;
+    const within = (d) => symptoms.filter((s) => U.daysBetween(s.date, today) <= d);
+    const s30 = within(30);
+    const s7 = within(7);
+    const meds = (pet.medications || '').toLowerCase();
+
+    const facts = {
+      species: `Species: ${dog ? 'Dog' : 'Cat'}`,
+      breed: `Breed: ${pet.breed || 'Not set'}`,
+      age: `Age: ${age.label}`,
+      stage: `Life stage: ${stage}`,
+      size: dog ? `Size: ${PL.catalog.sizes[pet.size] || 'Not set'}` : null,
+      weight: `Weight: ${pet.weightLb ? `${pet.weightLb} lb` : 'Not set'}`,
+      neutered: `Spayed/neutered: ${pet.neutered ? 'Yes' : 'No'}`,
+      meds: `Medications: ${pet.medications || 'None listed'}`,
+      allergies: `Allergies: ${pet.allergies || 'None listed'}`,
+      conditions: `Conditions: ${pet.conditions || 'None listed'}`,
+      records: `Records on file: ${records.length}`,
+      vax: `Last vaccination record: ${lastVax ? U.fmtDate(lastVax.date) : 'None on file'}`,
+      symptoms: `Symptom entries, last 30 days: ${s30.length}`,
+    };
+
+    const cards = [];
+    const add = (c) =>
+      cards.push({ priority: 'info', ask: [], ...c, uses: c.uses.map((k) => facts[k]).filter(Boolean) });
+
+    // ---------- Symptom-driven items ----------
+    const flagged = s7.filter((s) => s.redFlags && s.redFlags.length);
+    if (flagged.length) {
+      const flags = [...new Set(flagged.flatMap((s) => s.redFlags))];
+      add({
+        id: 'red-flags', priority: 'urgent', category: 'Warning signs',
+        title: 'Warning signs were logged — contact a veterinarian now',
+        why: `You recorded: ${flags.join('; ')}. These can be emergencies. PetLumen cannot assess an emergency.`,
+        uses: ['symptoms'],
+        actions: [
+          'Call your veterinarian or the nearest emergency animal hospital right away.',
+          'For a suspected poisoning, the ASPCA Animal Poison Control Center is available at (888) 426-4435 (a fee may apply).',
+          'Bring the packaging of anything your pet may have eaten, and your visit summary.',
+        ],
+        sources: [SOURCES.poison, SOURCES.avma],
+      });
+    }
+    const severe = s7.filter((s) => Number(s.severity) >= 4);
+    if (severe.length) {
+      add({
+        id: 'severe', priority: 'attention', category: 'Symptoms',
+        title: `A ${severe[0].severity >= 5 ? 'severe' : 'significant'} change was logged this week`,
+        why: `"${severe[0].description}" on ${U.fmtDate(severe[0].date)} was rated ${severe[0].severity}/5.`,
+        uses: ['symptoms', 'age'],
+        actions: [
+          'Consider calling your veterinarian to describe the change and ask whether a visit is needed.',
+          'Keep logging what you notice (when it happens, how long it lasts) so the timeline is accurate.',
+        ],
+        ask: ['Based on these entries, should my pet be seen, and how soon?', 'What changes should make me call back right away?'],
+        sources: [SOURCES.log, SOURCES.avma],
+      });
+    }
+    if (young && age.months < 6 && s7.some((s) => s.category === 'Digestive' || s.category === 'Eating & drinking')) {
+      add({
+        id: 'young-digestive', priority: 'attention', category: 'Symptoms',
+        title: `Stomach upsets matter more in a young ${baby}`,
+        why: `A digestive or appetite change was logged in the last 7 days for ${pet.name}, a ${age.label.replace(/ (\w+?)s?$/, '-$1')}-old ${baby}. Very young pets can become dehydrated faster than adults.`,
+        uses: ['age', 'symptoms', 'vax'],
+        actions: [
+          'Call your veterinarian if vomiting or diarrhea continues or repeats, if there is blood, or if your pet stops eating or drinking or seems lethargic.',
+          `Mention where your ${baby} is in the vaccine series — your vet will want to know.`,
+        ],
+        ask: ['Is this normal after a food change, or should we come in?'],
+        sources: [SOURCES.log, dog ? SOURCES.canineVax : SOURCES.felineVax],
+      });
+    }
+    const byCat = {};
+    s30.forEach((s) => (byCat[s.category] = (byCat[s.category] || 0) + 1));
+    Object.entries(byCat)
+      .filter(([, n]) => n >= 2)
+      .forEach(([cat, n]) =>
+        add({
+          id: `pattern-${cat}`, priority: 'info', category: 'Symptoms',
+          title: `Pattern: ${n} "${cat}" entries in the last 30 days`,
+          why: 'Repeated entries in the same area are worth sharing, even if each one seemed minor.',
+          uses: ['symptoms'],
+          actions: ['Open the Vet summary tab and bring it to your next visit or call.', 'Note anything that changed around the same time (food, treats, routine, environment).'],
+          ask: [`Could these ${cat.toLowerCase()} changes be connected?`],
+          sources: [SOURCES.log],
+        })
+      );
+
+    // ---------- Preventive care ----------
+    if (young && age.weeks < 26) {
+      const daysSinceVax = lastVax ? U.daysBetween(lastVax.date, today) : null;
+      const overdue = daysSinceVax === null ? age.weeks >= 9 : daysSinceVax > 28 && age.weeks < 20;
+      add({
+        id: 'vaccine-series', priority: overdue ? 'attention' : 'info', category: 'Preventive care',
+        title: dog ? 'Puppy vaccine series' : 'Kitten vaccine series',
+        why: lastVax
+          ? `Last vaccination on file: ${lastVax.title} (${U.fmtDate(lastVax.date)}, ${daysSinceVax} days ago).`
+          : `No vaccination record is on file for this ${age.label} old ${baby}.`,
+        uses: ['age', 'species', 'vax', 'records'],
+        actions: dog
+          ? [
+            'Core puppy vaccines (distemper, adenovirus, parvovirus) are generally given every 2–4 weeks starting at 6–8 weeks of age, until at least 16 weeks old.',
+            'Rabies vaccination timing follows local law; ask your vet when it is due.',
+            lastVax ? 'Add each dose as a record so the series stays complete in one place.' : 'Upload any shelter or breeder vaccine paperwork as a record.',
+          ]
+          : [
+            'Core kitten vaccines (FVRCP) are generally given every 3–4 weeks until about 16–20 weeks of age.',
+            'Ask your vet about rabies and feline leukemia (FeLV) vaccination for your kitten.',
+            'Upload shelter or breeder paperwork as a record so the series stays complete.',
+          ],
+        ask: ['When is the next dose due, and when is the series complete?', 'Which non-core vaccines fit our lifestyle?'],
+        sources: [dog ? SOURCES.canineVax : SOURCES.felineVax],
+      });
+    } else if (!lastVisit || U.daysBetween(lastVisit.date, today) > 365) {
+      add({
+        id: 'annual-visit', priority: 'attention', category: 'Preventive care',
+        title: 'No wellness visit on file in the last 12 months',
+        why: lastVisit ? `Most recent exam or vaccination record: ${U.fmtDate(lastVisit.date)}.` : 'No exam or vaccination records are on file yet.',
+        uses: ['records', 'vax', 'stage'],
+        actions: ['If you have records from another clinic, add them so the history is complete.', 'Ask your clinic whether an exam or booster is due.'],
+        ask: ['Which vaccines or tests are due this year?'],
+        sources: [dog ? SOURCES.canineLife : SOURCES.felineLife],
+      });
+    }
+
+    if (dog && young && age.weeks < 20) {
+      add({
+        id: 'socialization', category: 'Behavior',
+        title: 'Socialization window',
+        why: `At ${age.label}, your puppy is in or near the main socialization period (about 3–14 weeks of age).`,
+        uses: ['age', 'vax'],
+        actions: [
+          'Offer short, positive experiences with new people, sounds, surfaces, and handling.',
+          'Puppy classes can start as early as 7–8 weeks when the puppy has had at least one set of vaccines and deworming, about a week before the first class.',
+          'Avoid areas with unknown dogs or dog waste until your vet says the vaccine series is far enough along.',
+        ],
+        ask: ['Which places are safe for my puppy at this stage?'],
+        sources: [SOURCES.socialization],
+      });
+    }
+
+    if (dog) {
+      const hasPrev = /heartworm/.test(meds);
+      add({
+        id: 'parasites', priority: hasPrev || age.weeks < 8 ? 'info' : 'attention', category: 'Preventive care',
+        title: hasPrev ? 'Keep the parasite preventive on schedule' : 'No heartworm preventive listed',
+        why: hasPrev ? `Listed on profile: ${pet.medications}.` : 'The profile does not list a heartworm or flea/tick preventive.',
+        uses: ['meds', 'weight', 'age'],
+        actions: [
+          'The American Heartworm Society recommends year-round heartworm prevention and regular heartworm testing.',
+          'Year-round flea, tick, and intestinal parasite control is commonly recommended; products are dosed by weight, so keep the weight on the profile current.',
+          hasPrev ? 'Log the product name and dose in Medications so it shows on your vet summary.' : 'If your pet already receives a preventive, add it under Medications.',
+        ],
+        ask: ['Which preventive fits my pet’s weight and our area?', 'How often should fecal and heartworm tests be done?'],
+        sources: [SOURCES.heartworm, SOURCES.parasites],
+      });
+    } else {
+      add({
+        id: 'parasites-cat', category: 'Preventive care',
+        title: 'Parasite prevention for cats',
+        why: pet.medications ? `Listed on profile: ${pet.medications}.` : 'No preventive is listed on the profile.',
+        uses: ['meds', 'weight'],
+        actions: ['Indoor cats can still get fleas and intestinal parasites; ask whether year-round prevention is recommended.', 'Never use a dog flea product on a cat unless your veterinarian says it is safe.'],
+        ask: ['Does my indoor cat need year-round prevention?'],
+        sources: [SOURCES.parasites],
+      });
+    }
+
+    add({
+      id: 'nutrition', category: 'Nutrition',
+      title: young ? `Feeding a growing ${baby}` : 'Food and body condition',
+      why: young
+        ? `${pet.name} is a ${age.label.replace(/ (\w+?)s?$/, '-$1')}-old ${dog ? `${(PL.catalog.sizes[pet.size] || '').toLowerCase()} ` : ''}${baby}${pet.weightLb ? ` weighing ${pet.weightLb} lb` : ''}.`
+        : `${pet.name} is a ${stage.toLowerCase()} ${dog ? 'dog' : 'cat'}${pet.weightLb ? ` weighing ${pet.weightLb} lb` : ''}.`,
+      uses: ['age', 'stage', 'size', 'weight', 'allergies'],
+      actions: [
+        young ? 'Choose a complete and balanced food labeled for growth (or all life stages).' : 'Choose a complete and balanced food for your pet’s life stage.',
+        dog && young && (pet.size === 'large' || pet.size === 'giant')
+          ? 'Large and giant breed puppies benefit from food formulated for large-breed growth; avoid overfeeding and extra calcium supplements.'
+          : 'Ask your vet to show you how to check body condition score at home.',
+        'Change foods gradually over about a week to reduce stomach upset.',
+        pet.allergies ? `Check ingredient labels for listed allergies: ${pet.allergies}.` : 'Treats should be a small part of daily calories.',
+      ],
+      ask: ['How much should my pet eat per day right now?', 'What is my pet’s ideal body condition score?'],
+      sources: [SOURCES.nutrition],
+    });
+
+    if (!pet.neutered && age.months >= 4 && age.years < 2) {
+      add({
+        id: 'spay-neuter', category: 'Preventive care',
+        title: 'Plan a spay/neuter conversation',
+        why: `${pet.name} is ${age.label} old and the profile lists them as not spayed/neutered.`,
+        uses: ['neutered', 'age', 'size', 'species'],
+        actions: [
+          'Timing is an individual decision; your veterinarian will consider breed, size, health, and lifestyle.',
+          dog && (pet.size === 'large' || pet.size === 'giant') ? 'For large and giant breeds, some guidance suggests discussing waiting until growth is complete.' : 'Ask about recovery time and what to prepare at home.',
+        ],
+        ask: ['What timing do you recommend for my pet, and why?'],
+        sources: [dog ? SOURCES.canineLife : SOURCES.felineLife],
+      });
+    }
+
+    add({
+      id: 'dental', category: 'Preventive care',
+      title: young ? 'Start a tooth-brushing habit early' : 'Daily dental care',
+      why: `Dental care applies at every life stage; ${pet.name} is in the ${stage.toLowerCase()} stage.`,
+      uses: ['stage'],
+      actions: [
+        'Daily tooth brushing with pet toothpaste is the most effective home care.',
+        young ? 'Short, positive sessions handling the mouth make brushing easier later.' : 'Ask whether a dental exam or cleaning is due at the next visit.',
+      ],
+      ask: ['Are there signs of dental disease I should watch for?'],
+      sources: [SOURCES.dental],
+    });
+
+    if (stage === 'Senior') {
+      add({
+        id: 'senior', priority: 'info', category: 'Preventive care',
+        title: 'Senior wellness check-ins',
+        why: `${pet.name} is ${age.label} old, which is the senior life stage for ${dog ? 'this size of dog' : 'cats'}.`,
+        uses: ['age', 'stage', 'size', 'conditions'],
+        actions: ['Ask whether checkups every 6 months make sense.', 'Log changes in mobility, thirst, appetite, weight, or behavior — gradual changes are easy to miss.'],
+        ask: ['Which screening tests do you recommend at this age?'],
+        sources: [dog ? SOURCES.canineLife : SOURCES.felineLife],
+      });
+    }
+
+    if (young) {
+      add({
+        id: 'toxins', category: 'Safety',
+        title: `${dog ? 'Puppy' : 'Kitten'}-proof against common toxins`,
+        why: `Young pets explore with their mouths. ${pet.name} is ${age.label} old.`,
+        uses: ['age', 'species'],
+        actions: [
+          dog ? 'Keep chocolate, xylitol (in some gum and peanut butter), grapes/raisins, onions, and human medications out of reach.'
+            : 'Keep lilies, human medications, string, and household cleaners out of reach.',
+          'Save the ASPCA Animal Poison Control number: (888) 426-4435 (a fee may apply).',
+        ],
+        sources: [SOURCES.poison],
+      });
+    }
+
+    if (pet.allergies || pet.conditions) {
+      add({
+        id: 'profile-health', category: 'Records',
+        title: 'Keep health notes visible to every caregiver',
+        why: [pet.allergies && `Allergies: ${pet.allergies}`, pet.conditions && `Conditions: ${pet.conditions}`].filter(Boolean).join('. ') + '.',
+        uses: ['allergies', 'conditions', 'meds'],
+        actions: ['These appear on the Vet summary — share it with sitters, groomers, or a new clinic.'],
+        sources: [SOURCES.log],
+      });
+    }
+
+    cards.sort((a, b) => PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]);
+    return { age, stage, facts: Object.values(facts).filter(Boolean), cards, generatedOn: today };
+  }
+
+  PL.guidance = { build, ageInfo, lifeStage, SOURCES };
+})(window.PL);
+
+</script>
+<script>
+/*
+ * PetLumen prototype UI: hash router, views, and event handlers.
+ * Views return HTML strings; events are handled by delegation on the document
+ * using data-form / data-action attributes.
+ */
+(function (PL) {
+  'use strict';
+
+  const store = PL.store;
+  const U = PL.util;
+  const C = PL.catalog;
+  const app = document.getElementById('app');
+
+  const ui = { dataPage: 1, dataQuery: '', actPage: 1, actPet: '', actAction: '', timeline: 'all' };
+  const PAGE = { data: 20, activity: 40 };
+
+  // ---------- Helpers ----------
+  const h = (v) =>
+    String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  // Navigation is kept in the page (not the address bar) so the app also works
+  // inside embedded viewers. The last page is remembered for refreshes.
+  const ROUTE_KEY = 'petlumen.route';
+  let route = '#/';
+  const go = (hash) => {
+    route = hash;
+    try {
+      localStorage.setItem(ROUTE_KEY, hash);
+    } catch (e) {
+      /* remembering the page is optional */
+    }
+    render();
+    window.scrollTo(0, 0);
+  };
+  // Inside an iframe viewer, printing and file downloads are blocked.
+  const EMBEDDED = (() => {
+    try {
+      return window.self !== window.top;
+    } catch (e) {
+      return true;
+    }
+  })();
+  const speciesIcon = (pet) => (pet.species === 'cat' ? '🐱' : '🐶');
+  const sevClass = (n) => (n >= 4 ? 'sev-high' : n >= 3 ? 'sev-mid' : 'sev-low');
+  const recent = (ts, minutes) => ts && Date.now() - Date.parse(ts) < minutes * 60000;
+  const nl2br = (s) => h(s).replace(/\n/g, '<br>');
+
+  function toast(msg, type) {
+    const el = document.createElement('div');
+    el.className = `toast ${type || ''}`;
+    el.setAttribute('role', 'status');
+    el.textContent = msg;
+    document.getElementById('toasts').appendChild(el);
+    setTimeout(() => el.classList.add('out'), 3200);
+    setTimeout(() => el.remove(), 3700);
+  }
+  PL.ui = { toast };
+
+  function pager(page, total, size, action) {
+    const pages = Math.max(1, Math.ceil(total / size));
+    if (pages === 1) return '';
+    return `<div class="pager">
+      <button class="btn btn-ghost btn-sm" data-action="${action}" data-page="${page - 1}" ${page <= 1 ? 'disabled' : ''}>← Prev</button>
+      <span class="muted small">Page ${page} of ${pages}</span>
+      <button class="btn btn-ghost btn-sm" data-action="${action}" data-page="${page + 1}" ${page >= pages ? 'disabled' : ''}>Next →</button>
+    </div>`;
+  }
+
+  // ---------- Layout ----------
+  function header(user, view) {
+    const link = (href, label, key) => `<a href="${href}" class="${view === key ? 'active' : ''}">${label}</a>`;
+    return `
+      <header class="topbar"><div class="wrap topbar-inner">
+        <a class="brand" href="#/${user ? 'pets' : 'login'}" aria-label="PetLumen home">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJQZXRMdW1lbiI+CiAgPGcgc3Ryb2tlPSIjRjJCMjMzIiBzdHJva2Utd2lkdGg9IjIuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj4KICAgIDxsaW5lIHgxPSIzNiIgeTE9IjMiIHgyPSIzNiIgeTI9IjguNSIvPgogICAgPGxpbmUgeDE9IjQzLjUiIHkxPSI2LjUiIHgyPSIzOS44IiB5Mj0iMTAuNiIvPgogICAgPGxpbmUgeDE9IjQ2IiB5MT0iMTQuNSIgeDI9IjQxIiB5Mj0iMTUuNiIvPgogIDwvZz4KICA8ZyBmaWxsPSIjMUIyQjRCIj4KICAgIDxlbGxpcHNlIGN4PSI5LjUiIGN5PSIyMSIgcng9IjQuMiIgcnk9IjUuMiIgdHJhbnNmb3JtPSJyb3RhdGUoLTE4IDkuNSAyMSkiLz4KICAgIDxlbGxpcHNlIGN4PSIxOCIgY3k9IjEyLjUiIHJ4PSI0LjQiIHJ5PSI1LjYiIHRyYW5zZm9ybT0icm90YXRlKC02IDE4IDEyLjUpIi8+CiAgICA8ZWxsaXBzZSBjeD0iMjguNSIgY3k9IjEyLjUiIHJ4PSI0LjQiIHJ5PSI1LjYiIHRyYW5zZm9ybT0icm90YXRlKDggMjguNSAxMi41KSIvPgogICAgPGVsbGlwc2UgY3g9IjM2LjUiIGN5PSIyMS41IiByeD0iNC4yIiByeT0iNS4yIiB0cmFuc2Zvcm09InJvdGF0ZSgyMCAzNi41IDIxLjUpIi8+CiAgPC9nPgogIDxwYXRoIGZpbGw9IiMxNDk0OEYiIGQ9Ik0yMyAyMi41Yy01LjYgMC0xMS44IDguNC0xMS44IDEzLjYgMCA0LjQgMy42IDYuNiA3LjQgNi42IDIgMCAzLjEtLjkgNC40LS45czIuNC45IDQuNC45YzMuOCAwIDcuNC0yLjIgNy40LTYuNiAwLTUuMi02LjItMTMuNi0xMS44LTEzLjZ6Ii8+Cjwvc3ZnPgo=" alt="" width="34" height="34"><span class="wordmark">Pet<span>Lumen</span></span>
+        </a>
+        <nav class="nav" aria-label="Main">
+          ${user ? link('#/pets', 'My pets', 'pets') + link('#/activity', 'Activity', 'activity') : ''}
+          ${link('#/data', 'Synthetic data', 'data')}
+        </nav>
+        <div class="userbox">
+          ${user
+            ? `<span class="user-name" title="${h(user.email)}">${h(user.name)}</span>
+               ${user.synthetic ? '<span class="badge badge-syn">Synthetic</span>' : ''}
+               <button class="btn btn-ghost btn-sm" data-action="sign-out">Sign out</button>`
+            : '<a class="btn btn-sm btn-primary" href="#/login">Sign in</a>'}
+        </div>
+      </div></header>
+      ${store.saving ? '' : '<div class="syn-banner" role="note"><div class="wrap">This browser is blocking storage, so changes will be lost when you close or refresh the page.</div></div>'}
+      ${user && user.synthetic
+        ? `<div class="syn-banner" role="note"><div class="wrap">You are viewing <strong>${h(user.name)}</strong>, a <strong>synthetic test account</strong>. This is generated sample data, not a real customer.</div></div>`
+        : ''}`;
+  }
+
+  const footer = () => `
+    <footer class="footer"><div class="wrap">
+      <p><strong>PetLumen is a class prototype (MGMT 485).</strong> It organizes owner-entered information and shares general, sourced care information.
+      It does not diagnose or treat, does not replace a veterinarian, and is not a 24/7 veterinary service.
+      In an emergency, contact your veterinarian or an emergency animal hospital.</p>
+      <p class="muted">Data is stored only in this browser.</p>
+    </div></footer>`;
+
+  const svg = (d) => `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+  const ICONS = {
+    profile: svg('<path d="M4 5a1 1 0 0 1 1-1h4l2 2h8a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M9 13h6M12 10v6"/>'),
+    symptoms: svg('<path d="M3 12h4l2-6 4 12 2-6h6"/>'),
+    guidance: svg('<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>'),
+  };
+
+  // ---------- Views ----------
+  function viewLogin() {
+    return `
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Prototype · Pet health, made clearer</p>
+          <h1>Your pet’s health, in one clear place.</h1>
+          <p class="lead">PetLumen helps first-time puppy owners manage their pet’s everyday health by connecting a digital health profile, symptom history, and personalized wellness guidance in one place.</p>
+          <ul class="feature-list">
+            <li><span class="fi">${ICONS.profile}</span><div><strong>Pet Health Profile</strong><br>Keep vaccines, visits, medications, and uploaded records together.</div></li>
+            <li><span class="fi">${ICONS.symptoms}</span><div><strong>Symptom Tracking</strong><br>Record what changed and when, then review it on a dated timeline.</div></li>
+            <li><span class="fi">${ICONS.guidance}</span><div><strong>Wellness Guidance</strong><br>Care information matched to your pet’s profile, with visible sources.</div></li>
+          </ul>
+        </div>
+        <div class="card auth-card">
+          <h2>Get started</h2>
+          <button class="btn btn-primary btn-block" data-action="demo-sign-in">Continue as Demo Owner</button>
+          <p class="muted small">Includes a sample puppy, Maple, with earlier records and observations.</p>
+          <div class="divider"><span>or use your own account</span></div>
+          <form data-form="sign-up" novalidate>
+            <label>Your name<input name="name" autocomplete="name" required maxlength="80"></label>
+            <label>Email<input name="email" type="email" autocomplete="email" required maxlength="120"></label>
+            <button class="btn btn-block" type="submit">Create account or sign in</button>
+          </form>
+          <p class="muted small">Prototype accounts have no password and live only in this browser.</p>
+        </div>
+      </section>`;
+  }
+
+  function viewPets(user) {
+    const pets = store.petsOf(user.id);
+    const today = U.today();
+    const cards = pets
+      .map((p) => {
+        const age = PL.guidance.ageInfo(p.birthDate);
+        const syms = store.symptomsOf(p.id);
+        const s30 = syms.filter((s) => U.daysBetween(s.date, today) <= 30).length;
+        const recs = store.recordsOf(p.id).length;
+        return `
+          <a class="card pet-card" href="#/pet/${h(p.id)}">
+            <div class="avatar" aria-hidden="true">${speciesIcon(p)}</div>
+            <div class="pet-card-body">
+              <h3>${h(p.name)} ${p.sample ? '<span class="badge">Sample</span>' : ''}${p.synthetic ? '<span class="badge badge-syn">Synthetic</span>' : ''}</h3>
+              <p class="muted">${h(p.breed || (p.species === 'cat' ? 'Cat' : 'Dog'))} · ${h(age.label)}</p>
+              <div class="chips">
+                <span class="chip">${recs} record${recs === 1 ? '' : 's'}</span>
+                <span class="chip">${s30} symptom${s30 === 1 ? '' : 's'} in 30 days</span>
+                ${syms[0] ? `<span class="chip">Last entry ${h(U.fmtDate(syms[0].date))}</span>` : ''}
+              </div>
+            </div>
+          </a>`;
+      })
+      .join('');
+    return `
+      <div class="page-head">
+        <div><h1>My pets</h1><p class="muted">Open a profile to log a symptom, add a record, or view guidance.</p></div>
+        <a class="btn btn-primary" href="#/pet/new">+ Add a pet</a>
+      </div>
+      ${pets.length
+        ? `<div class="pets-grid">${cards}</div>`
+        : `<div class="card empty"><div class="empty-icon">🐾</div><h2>No pets yet</h2><p class="muted">Start with your pet’s basic details. You can add records and symptoms next.</p><a class="btn btn-primary" href="#/pet/new">Create a pet profile</a></div>`}`;
+  }
+
+  function viewPetForm(pet) {
+    const p = pet || { species: 'dog', size: '', sex: '', neutered: false };
+    const breeds = [...C.dogBreeds, ...C.catBreeds].map(([b]) => `<option value="${h(b)}">`).join('');
+    const opt = (val, label, cur) => `<option value="${h(val)}" ${String(cur) === String(val) ? 'selected' : ''}>${h(label)}</option>`;
+    return `
+      <a class="back" href="${pet ? `#/pet/${h(pet.id)}` : '#/pets'}">← ${pet ? h(pet.name) : 'All pets'}</a>
+      <div class="card form-card">
+        <h1>${pet ? `Edit ${h(pet.name)}’s profile` : 'Create a pet profile'}</h1>
+        <p class="muted">Only name, species, and birth date are required. More details make guidance more specific.</p>
+        <form data-form="pet" data-pet-id="${pet ? h(pet.id) : ''}" novalidate>
+          <fieldset><legend>Basics</legend>
+            <div class="row">
+              <label>Name *<input name="name" required maxlength="40" value="${h(p.name)}"></label>
+              <label>Species *<select name="species">${opt('dog', 'Dog', p.species)}${opt('cat', 'Cat', p.species)}</select></label>
+            </div>
+            <div class="row">
+              <label>Breed<input name="breed" list="breed-list" maxlength="60" value="${h(p.breed)}" placeholder="Start typing…"><datalist id="breed-list">${breeds}</datalist></label>
+              <label>Size<select name="size">${opt('', 'Select…', p.size)}${Object.entries(C.sizes).map(([k, v]) => opt(k, v, p.size)).join('')}</select></label>
+            </div>
+            <div class="row">
+              <label>Birth date (or best estimate) *<input name="birthDate" type="date" required max="${U.today()}" value="${h(p.birthDate)}"></label>
+              <label>Weight (lb)<input name="weightLb" type="number" min="0" max="350" step="0.1" value="${h(p.weightLb)}"></label>
+            </div>
+            <div class="row">
+              <label>Sex<select name="sex">${opt('', 'Select…', p.sex)}${opt('female', 'Female', p.sex)}${opt('male', 'Male', p.sex)}</select></label>
+              <label class="check"><input type="checkbox" name="neutered" ${p.neutered ? 'checked' : ''}> Spayed / neutered</label>
+            </div>
+          </fieldset>
+          <fieldset><legend>Health details</legend>
+            <label>Current medications &amp; preventives<input name="medications" maxlength="200" value="${h(p.medications)}" placeholder="e.g. Monthly heartworm and flea/tick preventive"></label>
+            <label>Allergies<input name="allergies" maxlength="200" value="${h(p.allergies)}" placeholder="e.g. Chicken"></label>
+            <label>Known conditions<input name="conditions" maxlength="200" value="${h(p.conditions)}"></label>
+          </fieldset>
+          <fieldset><legend>Care team</legend>
+            <div class="row">
+              <label>Primary clinic<input name="clinic" maxlength="80" value="${h(p.clinic)}"></label>
+              <label>Microchip #<input name="microchip" maxlength="40" value="${h(p.microchip)}"></label>
+            </div>
+          </fieldset>
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">${pet ? 'Save changes' : 'Create profile'}</button>
+            <a class="btn btn-ghost" href="${pet ? `#/pet/${h(pet.id)}` : '#/pets'}">Cancel</a>
+          </div>
+        </form>
+      </div>`;
+  }
+
+  const TABS = [
+    ['overview', 'Overview'], ['records', 'Records'], ['symptoms', 'Symptoms'],
+    ['timeline', 'Timeline'], ['guidance', 'Guidance'], ['summary', 'Vet summary'],
+  ];
+
+  function viewPet(user, pet, tab) {
+    const age = PL.guidance.ageInfo(pet.birthDate);
+    const stage = PL.guidance.lifeStage(pet, age);
+    const body = { overview: tabOverview, records: tabRecords, symptoms: tabSymptoms, timeline: tabTimeline, guidance: tabGuidance, summary: tabSummary }[tab];
+    return `
+      <a class="back" href="#/pets">← All pets</a>
+      <section class="card pet-hero">
+        <div class="avatar avatar-lg" aria-hidden="true">${speciesIcon(pet)}</div>
+        <div class="pet-hero-body">
+          <h1>${h(pet.name)} ${pet.sample ? '<span class="badge">Sample pet</span>' : ''}${pet.synthetic ? '<span class="badge badge-syn">Synthetic</span>' : ''}</h1>
+          <p class="muted">${[pet.breed, pet.sex && pet.sex[0].toUpperCase() + pet.sex.slice(1), age.label, stage, pet.weightLb && `${pet.weightLb} lb`].filter(Boolean).map(h).join(' · ')}</p>
+        </div>
+        <a class="btn btn-ghost" href="#/pet/${h(pet.id)}/edit">Edit profile</a>
+      </section>
+      <nav class="tabs" role="tablist">
+        ${TABS.map(([k, l]) => `<a role="tab" aria-selected="${k === tab}" class="${k === tab ? 'active' : ''}" href="#/pet/${h(pet.id)}/${k}">${l}</a>`).join('')}
+      </nav>
+      <div class="tab-body">${body(user, pet)}</div>`;
+  }
+
+  function tabOverview(user, pet) {
+    const row = (k, v) => `<div><dt>${k}</dt><dd>${v ? h(v) : '<span class="muted">Not set</span>'}</dd></div>`;
+    const items = timelineItems(pet).slice(0, 5);
+    return `
+      <div class="two-col">
+        <section class="card">
+          <h2>Health profile</h2>
+          <dl class="facts">
+            ${row('Species', pet.species === 'cat' ? 'Cat' : 'Dog')}
+            ${row('Breed', pet.breed)}
+            ${row('Size', C.sizes[pet.size])}
+            ${row('Birth date', U.fmtDate(pet.birthDate))}
+            ${row('Weight', pet.weightLb ? `${pet.weightLb} lb` : '')}
+            ${row('Spayed / neutered', pet.neutered ? 'Yes' : 'No')}
+            ${row('Medications', pet.medications)}
+            ${row('Allergies', pet.allergies)}
+            ${row('Conditions', pet.conditions)}
+            ${row('Primary clinic', pet.clinic)}
+            ${row('Microchip', pet.microchip)}
+          </dl>
+          <p class="small muted">Last updated ${h(U.fmtTs(pet.updatedAt))}</p>
+        </section>
+        <div class="stack">
+          <section class="card">
+            <h2>Quick actions</h2>
+            <div class="quick">
+              <a class="btn btn-primary" href="#/pet/${h(pet.id)}/symptoms">Log a symptom</a>
+              <a class="btn" href="#/pet/${h(pet.id)}/records">Add a record</a>
+              <a class="btn" href="#/pet/${h(pet.id)}/guidance">Wellness guidance</a>
+              <a class="btn" href="#/pet/${h(pet.id)}/summary">Vet summary</a>
+            </div>
+          </section>
+          <section class="card">
+            <div class="card-head"><h2>Recent history</h2><a href="#/pet/${h(pet.id)}/timeline" class="small">Full timeline →</a></div>
+            ${items.length ? `<ol class="timeline compact">${items.map(timelineItemHtml).join('')}</ol>` : '<p class="muted">Nothing logged yet.</p>'}
+          </section>
+        </div>
+      </div>`;
+  }
+
+  function tabRecords(user, pet) {
+    const records = store.recordsOf(pet.id);
+    return `
+      <div class="two-col">
+        <section class="card">
+          <h2>Add a veterinary record</h2>
+          <form data-form="record" data-pet-id="${h(pet.id)}" novalidate>
+            <div class="row">
+              <label>Date *<input name="date" type="date" required max="${U.today()}" value="${U.today()}"></label>
+              <label>Type *<select name="type">${C.recordTypes.map((t) => `<option>${h(t)}</option>`).join('')}</select></label>
+            </div>
+            <label>Title *<input name="title" required maxlength="100" placeholder="e.g. 16-week DHPP vaccine"></label>
+            <label>Clinic<input name="clinic" maxlength="80" value="${h(pet.clinic)}"></label>
+            <label>Notes<textarea name="notes" rows="3" maxlength="1000" placeholder="What the vet said, next due date, lot number…"></textarea></label>
+            <label>Attach a file (PDF or photo, up to 10 MB)<input name="file" type="file" accept="application/pdf,image/*"></label>
+            <button class="btn btn-primary" type="submit">Save record</button>
+          </form>
+        </section>
+        <section class="card">
+          <h2>Records on file <span class="count">${records.length}</span></h2>
+          ${records.length
+            ? `<ul class="list">${records.map((r) => `
+              <li class="list-item">
+                <div class="li-date">${h(U.fmtDate(r.date))}</div>
+                <div class="li-body">
+                  <div><span class="tag">${h(r.type)}</span> <strong>${h(r.title)}</strong> ${recent(r.createdAt, 60) ? '<span class="badge badge-new">Just added</span>' : ''}</div>
+                  ${r.clinic ? `<div class="muted small">${h(r.clinic)}</div>` : ''}
+                  ${r.notes ? `<p class="small">${nl2br(r.notes)}</p>` : ''}
+                  ${r.attachment ? `<button class="link-btn small" data-action="open-file" data-id="${h(r.id)}">📎 ${h(r.attachment.name)} (${Math.max(1, Math.round(r.attachment.size / 1024))} KB)</button>` : ''}
+                </div>
+              </li>`).join('')}</ul>`
+            : '<p class="muted">No records yet. Add vaccines, exams, or upload paperwork from your clinic.</p>'}
+        </section>
+      </div>`;
+  }
+
+  function tabSymptoms(user, pet) {
+    const symptoms = store.symptomsOf(pet.id);
+    const latestFlags = symptoms.find((s) => recent(s.createdAt, 30) && s.redFlags && s.redFlags.length);
+    return `
+      ${latestFlags ? `<div class="alert alert-urgent" role="alert"><strong>Warning signs logged.</strong> ${h(latestFlags.redFlags.join('; '))} can be emergencies. Contact your veterinarian or an emergency animal hospital now. PetLumen cannot assess emergencies.</div>` : ''}
+      <div class="two-col">
+        <section class="card">
+          <h2>Log a symptom or change</h2>
+          <form data-form="symptom" data-pet-id="${h(pet.id)}" novalidate>
+            <div class="row">
+              <label>Date noticed *<input name="date" type="date" required max="${U.today()}" value="${U.today()}"></label>
+              <label>Area *<select name="category">${C.symptomCategories.map((c) => `<option>${h(c)}</option>`).join('')}</select></label>
+            </div>
+            <label>What did you notice? *<textarea name="description" rows="2" required maxlength="300" placeholder="e.g. Vomited once after eating quickly"></textarea></label>
+            <fieldset class="severity"><legend>How noticeable is it? *</legend>
+              <div class="seg">
+                ${C.severities.map((l, i) => `<label class="seg-opt"><input type="radio" name="severity" value="${i + 1}" ${i === 1 ? 'checked' : ''}><span><b>${i + 1}</b>${h(l)}</span></label>`).join('')}
+              </div>
+            </fieldset>
+            <label>How long has it lasted?<select name="duration">${C.durations.map((d) => `<option>${h(d)}</option>`).join('')}</select></label>
+            <details class="flags">
+              <summary>Any warning signs? <span class="muted small">(check all that apply)</span></summary>
+              ${C.redFlags.map((f) => `<label class="check"><input type="checkbox" name="redFlags" value="${h(f)}"> ${h(f)}</label>`).join('')}
+            </details>
+            <button class="btn btn-primary" type="submit">Save entry</button>
+          </form>
+        </section>
+        <section class="card">
+          <div class="card-head"><h2>Symptom log <span class="count">${symptoms.length}</span></h2><a href="#/pet/${h(pet.id)}/timeline" class="small">View timeline →</a></div>
+          ${symptoms.length
+            ? `<ul class="list">${symptoms.map((s) => `
+              <li class="list-item">
+                <div class="li-date">${h(U.fmtDate(s.date))}</div>
+                <div class="li-body">
+                  <div><span class="tag">${h(s.category)}</span> <span class="sev ${sevClass(s.severity)}">${h(s.severity)}/5 ${h(C.severities[s.severity - 1])}</span> ${recent(s.createdAt, 60) ? '<span class="badge badge-new">Just added</span>' : ''}</div>
+                  <p>${h(s.description)}</p>
+                  <div class="muted small">Duration: ${h(s.duration)}</div>
+                  ${s.redFlags && s.redFlags.length ? `<div class="small flag-text">⚠ ${h(s.redFlags.join('; '))}</div>` : ''}
+                </div>
+              </li>`).join('')}</ul>`
+            : '<p class="muted">No entries yet. Logging small changes now makes patterns easier to explain later.</p>'}
+        </section>
+      </div>`;
+  }
+
+  function timelineItems(pet) {
+    const items = [];
+    store.symptomsOf(pet.id).forEach((s) => items.push({ kind: 'symptom', date: s.date, createdAt: s.createdAt, title: s.description, tag: s.category, sev: s.severity, flags: s.redFlags, sub: `Duration: ${s.duration}` }));
+    store.recordsOf(pet.id).forEach((r) => items.push({ kind: 'record', date: r.date, createdAt: r.createdAt, title: r.title, tag: r.type, sub: [r.clinic, r.attachment && `📎 ${r.attachment.name}`].filter(Boolean).join(' · ') }));
+    items.push({ kind: 'profile', date: U.toISODate(new Date(pet.createdAt)), createdAt: pet.createdAt, title: `${pet.name}’s profile created in PetLumen`, tag: 'Profile' });
+    return items.sort((a, b) => b.date.localeCompare(a.date) || b.createdAt.localeCompare(a.createdAt));
+  }
+
+  function timelineItemHtml(it) {
+    return `
+      <li class="tl tl-${it.kind}">
+        <span class="tl-dot" aria-hidden="true"></span>
+        <div class="tl-date">${h(U.fmtDate(it.date))}</div>
+        <div class="tl-body">
+          <div><span class="tag tag-${it.kind}">${h(it.kind === 'symptom' ? `Symptom · ${it.tag}` : it.kind === 'record' ? `Record · ${it.tag}` : it.tag)}</span>
+            ${it.sev ? `<span class="sev ${sevClass(it.sev)}">${h(it.sev)}/5</span>` : ''}
+            ${recent(it.createdAt, 60) ? '<span class="badge badge-new">New</span>' : ''}</div>
+          <div class="tl-title">${h(it.title)}</div>
+          ${it.sub ? `<div class="muted small">${h(it.sub)}</div>` : ''}
+          ${it.flags && it.flags.length ? `<div class="small flag-text">⚠ ${h(it.flags.join('; '))}</div>` : ''}
+        </div>
+      </li>`;
+  }
+
+  function tabTimeline(user, pet) {
+    const all = timelineItems(pet);
+    const items = ui.timeline === 'all' ? all : all.filter((i) => i.kind === ui.timeline);
+    const groups = [];
+    items.forEach((it) => {
+      const key = U.parseDate(it.date).toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+      if (!groups.length || groups[groups.length - 1].key !== key) groups.push({ key, items: [] });
+      groups[groups.length - 1].items.push(it);
+    });
+    const chip = (v, l) => `<button class="chip-btn ${ui.timeline === v ? 'active' : ''}" data-action="timeline-filter" data-v="${v}">${l}</button>`;
+    return `
+      <section class="card">
+        <div class="card-head">
+          <h2>Health timeline</h2>
+          <div class="chip-row">${chip('all', 'Everything')}${chip('symptom', 'Symptoms')}${chip('record', 'Records')}</div>
+        </div>
+        <p class="muted small">Symptoms and veterinary records in date order, newest first.</p>
+        ${groups.length
+          ? groups.map((g) => `<h3 class="tl-month">${h(g.key)}</h3><ol class="timeline">${g.items.map(timelineItemHtml).join('')}</ol>`).join('')
+          : '<p class="muted">Nothing to show for this filter.</p>'}
+      </section>`;
+  }
+
+  function tabGuidance(user, pet) {
+    const g = PL.guidance.build(pet, store.recordsOf(pet.id), store.symptomsOf(pet.id));
+    store.logGuidance(pet.id, user.id, g.cards.length);
+    const pri = { urgent: 'Act now', attention: 'Worth attention', info: 'Good to know' };
+    return `
+      <div class="alert alert-info">General information matched to ${h(pet.name)}’s profile and log, summarized from the sources shown on each item. It is <strong>not a diagnosis</strong> or treatment plan — use it to decide what to discuss with your veterinarian.</div>
+      <section class="card">
+        <h2>Profile details this guidance uses</h2>
+        <div class="chips">${g.facts.map((f) => `<span class="chip">${h(f)}</span>`).join('')}</div>
+        <p class="small muted">Generated ${h(U.fmtDate(g.generatedOn))}. Details look wrong? <a href="#/pet/${h(pet.id)}/edit">Update the profile</a> and guidance updates automatically.</p>
+      </section>
+      <div class="guidance">
+        ${g.cards.map((c) => `
+          <article class="card g-card pri-${c.priority}">
+            <div class="g-top"><span class="tag">${h(c.category)}</span><span class="pri">${pri[c.priority]}</span></div>
+            <h3>${h(c.title)}</h3>
+            <p>${h(c.why)}</p>
+            <ul>${c.actions.map((a) => `<li>${h(a)}</li>`).join('')}</ul>
+            ${c.ask.length ? `<details><summary>Questions to ask your vet</summary><ul>${c.ask.map((q) => `<li>${h(q)}</li>`).join('')}</ul>
+              <button class="link-btn small" data-action="add-questions" data-pet="${h(pet.id)}" data-q="${h(c.ask.join('\n'))}">+ Add to my vet questions</button></details>` : ''}
+            <div class="g-uses"><span class="small muted">Based on:</span> ${c.uses.map((u) => `<span class="chip chip-sm">${h(u)}</span>`).join('')}</div>
+            <div class="g-sources small"><span class="muted">Source${c.sources.length > 1 ? 's' : ''}:</span>
+              ${c.sources.map((s) => (s.url ? `<a href="${h(s.url)}" target="_blank" rel="noopener">${h(s.name)}</a> <span class="muted">(${h(s.org)})</span>` : `${h(s.name)} <span class="muted">(${h(s.org)})</span>`)).join(' · ')}
+            </div>
+          </article>`).join('')}
+      </div>`;
+  }
+
+  function summaryData(pet) {
+    const today = U.today();
+    const age = PL.guidance.ageInfo(pet.birthDate);
+    const symptoms = store.symptomsOf(pet.id).filter((s) => U.daysBetween(s.date, today) <= 30);
+    const records = store.recordsOf(pet.id).slice(0, 6);
+    return { today, age, symptoms, records };
+  }
+
+  function summaryText(pet, user) {
+    const { today, age, symptoms, records } = summaryData(pet);
+    const lines = [
+      `PetLumen visit summary for ${pet.name}`,
+      `Prepared ${U.fmtDate(today)} by ${user.name}${user.synthetic ? ' (SYNTHETIC TEST ACCOUNT)' : ''}`,
+      '',
+      `${pet.species === 'cat' ? 'Cat' : 'Dog'} · ${pet.breed || 'Breed not set'} · ${pet.sex || 'Sex not set'} · ${age.label} (born ${U.fmtDate(pet.birthDate)})`,
+      `Weight: ${pet.weightLb ? `${pet.weightLb} lb` : 'not set'} · Spayed/neutered: ${pet.neutered ? 'yes' : 'no'}`,
+      `Medications: ${pet.medications || 'none listed'}`,
+      `Allergies: ${pet.allergies || 'none listed'}`,
+      `Conditions: ${pet.conditions || 'none listed'}`,
+      '',
+      'Symptoms in the last 30 days:',
+      ...(symptoms.length ? symptoms.map((s) => `- ${U.fmtDate(s.date)} · ${s.category} · ${s.severity}/5 · ${s.description} (${s.duration})${s.redFlags && s.redFlags.length ? ` · WARNING SIGNS: ${s.redFlags.join('; ')}` : ''}`) : ['- None logged']),
+      '',
+      'Recent records:',
+      ...(records.length ? records.map((r) => `- ${U.fmtDate(r.date)} · ${r.type} · ${r.title}${r.clinic ? ` · ${r.clinic}` : ''}`) : ['- None on file']),
+      '',
+      'Questions for the vet:',
+      ...(pet.vetQuestions ? pet.vetQuestions.split('\n').filter(Boolean).map((q) => `- ${q}`) : ['- None yet']),
+      '',
+      'Owner-reported information organized with PetLumen. Not a diagnosis.',
+    ];
+    return lines.join('\n');
+  }
+
+  function tabSummary(user, pet) {
+    store.logVetSummary(pet.id, user.id);
+    const { today, age, symptoms, records } = summaryData(pet);
+    const qs = (pet.vetQuestions || '').split('\n').filter(Boolean);
+    return `
+      <div class="summary-actions no-print">
+        ${EMBEDDED ? '' : '<button class="btn btn-primary" data-action="print">Print / save as PDF</button>'}
+        <button class="btn${EMBEDDED ? ' btn-primary' : ''}" data-action="copy-summary" data-pet="${h(pet.id)}">Copy as text</button>
+      </div>
+      <article class="card summary" id="vet-summary">
+        <header class="summary-head">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJQZXRMdW1lbiI+CiAgPGcgc3Ryb2tlPSIjRjJCMjMzIiBzdHJva2Utd2lkdGg9IjIuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj4KICAgIDxsaW5lIHgxPSIzNiIgeTE9IjMiIHgyPSIzNiIgeTI9IjguNSIvPgogICAgPGxpbmUgeDE9IjQzLjUiIHkxPSI2LjUiIHgyPSIzOS44IiB5Mj0iMTAuNiIvPgogICAgPGxpbmUgeDE9IjQ2IiB5MT0iMTQuNSIgeDI9IjQxIiB5Mj0iMTUuNiIvPgogIDwvZz4KICA8ZyBmaWxsPSIjMUIyQjRCIj4KICAgIDxlbGxpcHNlIGN4PSI5LjUiIGN5PSIyMSIgcng9IjQuMiIgcnk9IjUuMiIgdHJhbnNmb3JtPSJyb3RhdGUoLTE4IDkuNSAyMSkiLz4KICAgIDxlbGxpcHNlIGN4PSIxOCIgY3k9IjEyLjUiIHJ4PSI0LjQiIHJ5PSI1LjYiIHRyYW5zZm9ybT0icm90YXRlKC02IDE4IDEyLjUpIi8+CiAgICA8ZWxsaXBzZSBjeD0iMjguNSIgY3k9IjEyLjUiIHJ4PSI0LjQiIHJ5PSI1LjYiIHRyYW5zZm9ybT0icm90YXRlKDggMjguNSAxMi41KSIvPgogICAgPGVsbGlwc2UgY3g9IjM2LjUiIGN5PSIyMS41IiByeD0iNC4yIiByeT0iNS4yIiB0cmFuc2Zvcm09InJvdGF0ZSgyMCAzNi41IDIxLjUpIi8+CiAgPC9nPgogIDxwYXRoIGZpbGw9IiMxNDk0OEYiIGQ9Ik0yMyAyMi41Yy01LjYgMC0xMS44IDguNC0xMS44IDEzLjYgMCA0LjQgMy42IDYuNiA3LjQgNi42IDIgMCAzLjEtLjkgNC40LS45czIuNC45IDQuNC45YzMuOCAwIDcuNC0yLjIgNy40LTYuNiAwLTUuMi02LjItMTMuNi0xMS44LTEzLjZ6Ii8+Cjwvc3ZnPgo=" alt="" width="36" height="36">
+          <div><h2>Visit summary: ${h(pet.name)}</h2>
+          <p class="muted small">Prepared ${h(U.fmtDate(today))} by ${h(user.name)}${user.synthetic ? ' · <strong>Synthetic test account</strong>' : ''}${pet.sample ? ' · Sample pet' : ''}</p></div>
+        </header>
+        <section>
+          <h3>Pet details</h3>
+          <table class="kv">
+            <tr><th>Species / breed</th><td>${h(pet.species === 'cat' ? 'Cat' : 'Dog')} · ${h(pet.breed || 'Not set')}</td></tr>
+            <tr><th>Age</th><td>${h(age.label)} (born ${h(U.fmtDate(pet.birthDate))})</td></tr>
+            <tr><th>Sex / spayed-neutered</th><td>${h(pet.sex || 'Not set')} · ${pet.neutered ? 'Yes' : 'No'}</td></tr>
+            <tr><th>Weight</th><td>${pet.weightLb ? `${h(pet.weightLb)} lb` : 'Not set'}</td></tr>
+            <tr><th>Medications</th><td>${h(pet.medications || 'None listed')}</td></tr>
+            <tr><th>Allergies</th><td>${h(pet.allergies || 'None listed')}</td></tr>
+            <tr><th>Conditions</th><td>${h(pet.conditions || 'None listed')}</td></tr>
+            <tr><th>Primary clinic</th><td>${h(pet.clinic || 'Not set')}</td></tr>
+          </table>
+        </section>
+        <section>
+          <h3>Symptoms in the last 30 days (${symptoms.length})</h3>
+          ${symptoms.length
+            ? `<div class="table-wrap"><table class="data"><thead><tr><th>Date</th><th>Area</th><th>Severity</th><th>What was noticed</th><th>Duration</th></tr></thead><tbody>
+              ${symptoms.map((s) => `<tr><td>${h(U.fmtDate(s.date))}</td><td>${h(s.category)}</td><td>${h(s.severity)}/5</td><td>${h(s.description)}${s.redFlags && s.redFlags.length ? `<div class="flag-text small">⚠ ${h(s.redFlags.join('; '))}</div>` : ''}</td><td>${h(s.duration)}</td></tr>`).join('')}
+              </tbody></table></div>`
+            : '<p class="muted">None logged.</p>'}
+        </section>
+        <section>
+          <h3>Recent records</h3>
+          ${records.length
+            ? `<ul class="plain">${records.map((r) => `<li><strong>${h(U.fmtDate(r.date))}</strong> · ${h(r.type)} · ${h(r.title)}${r.clinic ? ` <span class="muted">(${h(r.clinic)})</span>` : ''}</li>`).join('')}</ul>`
+            : '<p class="muted">None on file.</p>'}
+        </section>
+        <section>
+          <h3>Questions for the vet</h3>
+          ${qs.length ? `<ol>${qs.map((q) => `<li>${h(q)}</li>`).join('')}</ol>` : '<p class="muted">None yet.</p>'}
+        </section>
+        <p class="small muted summary-foot">Owner-reported information organized with PetLumen. Not a diagnosis.</p>
+      </article>
+      <section class="card no-print">
+        <h2>My questions for the vet</h2>
+        <form data-form="questions" data-pet-id="${h(pet.id)}">
+          <label>One question per line<textarea name="questions" rows="4" maxlength="2000">${h(pet.vetQuestions)}</textarea></label>
+          <button class="btn" type="submit">Save questions</button>
+        </form>
+      </section>`;
+  }
+
+  function viewActivity(user) {
+    const pets = store.petsOf(user.id);
+    const petName = Object.fromEntries(pets.map((p) => [p.id, p.name]));
+    let rows = store.activityOf(user.id);
+    if (ui.actPet) rows = rows.filter((a) => a.petId === ui.actPet);
+    if (ui.actAction) rows = rows.filter((a) => a.action === ui.actAction);
+    const total = rows.length;
+    const pages = Math.max(1, Math.ceil(total / PAGE.activity));
+    ui.actPage = Math.min(ui.actPage, pages);
+    const slice = rows.slice((ui.actPage - 1) * PAGE.activity, ui.actPage * PAGE.activity);
+    return `
+      <div class="page-head"><div><h1>Activity history</h1>
+        <p class="muted">Every profile update, record upload, symptom entry, and guidance request is saved with the user, pet, action, and time.</p></div></div>
+      <section class="card">
+        <div class="filters">
+          <label>Pet<select data-filter="actPet"><option value="">All pets</option>${pets.map((p) => `<option value="${h(p.id)}" ${ui.actPet === p.id ? 'selected' : ''}>${h(p.name)}</option>`).join('')}</select></label>
+          <label>Action<select data-filter="actAction"><option value="">All actions</option>${Object.entries(C.actions).map(([k, v]) => `<option value="${k}" ${ui.actAction === k ? 'selected' : ''}>${h(v)}</option>`).join('')}</select></label>
+          <span class="muted small">${total} event${total === 1 ? '' : 's'}</span>
+        </div>
+        ${slice.length
+          ? `<div class="table-wrap"><table class="data"><thead><tr><th>Time</th><th>User</th><th>Pet</th><th>Action</th><th>Detail</th></tr></thead><tbody>
+            ${slice.map((a) => `<tr><td class="nowrap">${h(U.fmtTs(a.ts))}</td><td>${h(user.name)}</td><td>${a.petId ? h(petName[a.petId] || a.petId) : '<span class="muted">—</span>'}</td><td><span class="tag tag-act">${h(C.actions[a.action] || a.action)}</span></td><td>${h(a.detail)}</td></tr>`).join('')}
+            </tbody></table></div>`
+          : '<p class="muted">No activity matches these filters.</p>'}
+        ${pager(ui.actPage, total, PAGE.activity, 'act-page')}
+      </section>`;
+  }
+
+  function ownersTable() {
+    const d = store.data;
+    const q = ui.dataQuery.trim().toLowerCase();
+    const petCount = {};
+    const petNames = {};
+    d.pets.forEach((p) => {
+      petCount[p.ownerId] = (petCount[p.ownerId] || 0) + 1;
+      (petNames[p.ownerId] = petNames[p.ownerId] || []).push(p.name);
+    });
+    let owners = d.users.filter((u) => u.synthetic);
+    if (q) owners = owners.filter((u) => u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q) || u.id.includes(q) || (petNames[u.id] || []).some((n) => n.toLowerCase().includes(q)));
+    const total = owners.length;
+    const pages = Math.max(1, Math.ceil(total / PAGE.data));
+    ui.dataPage = Math.min(ui.dataPage, pages);
+    const slice = owners.slice((ui.dataPage - 1) * PAGE.data, ui.dataPage * PAGE.data);
+    const last = {};
+    const ids = new Set(slice.map((u) => u.id));
+    d.activity.forEach((a) => {
+      if (ids.has(a.userId) && (!last[a.userId] || a.ts > last[a.userId])) last[a.userId] = a.ts;
+    });
+    return `
+      <p class="muted small">${total} synthetic owner${total === 1 ? '' : 's'}${q ? ' match' : ''}</p>
+      <div class="table-wrap"><table class="data"><thead><tr><th>Account</th><th>Email</th><th>Pets</th><th>Last activity</th><th></th></tr></thead><tbody>
+        ${slice.map((u) => `<tr>
+          <td><strong>${h(u.name)}</strong> <span class="badge badge-syn">Synthetic</span><div class="muted small">${h(u.id)}</div></td>
+          <td>${h(u.email)}</td>
+          <td>${petCount[u.id] || 0}<div class="muted small">${h((petNames[u.id] || []).join(', '))}</div></td>
+          <td class="nowrap">${h(U.fmtTs(last[u.id]))}</td>
+          <td><button class="btn btn-sm" data-action="view-as" data-id="${h(u.id)}">Open account</button></td>
+        </tr>`).join('')}
+      </tbody></table></div>
+      ${pager(ui.dataPage, total, PAGE.data, 'data-page')}`;
+  }
+
+  function viewData() {
+    const d = store.data;
+    const synUsers = d.users.filter((u) => u.synthetic);
+    const synIds = new Set(synUsers.map((u) => u.id));
+    const synPets = d.pets.filter((p) => p.synthetic);
+    const synPetIds = new Set(synPets.map((p) => p.id));
+    const synActivity = d.activity.filter((a) => synIds.has(a.userId));
+    const counts = {};
+    synActivity.forEach((a) => (counts[a.action] = (counts[a.action] || 0) + 1));
+    const dogs = synPets.filter((p) => p.species === 'dog').length;
+    const puppies = synPets.filter((p) => p.species === 'dog' && PL.guidance.ageInfo(p.birthDate).months < 12).length;
+    const stat = (n, l) => `<div class="stat"><div class="stat-n">${n.toLocaleString()}</div><div class="stat-l">${l}</div></div>`;
+    const realUsers = d.users.filter((u) => !u.synthetic);
+    return `
+      <div class="syn-hero" role="note">
+        <strong>SYNTHETIC TEST DATA.</strong> Every account on this page is generated for prototype testing. They are not real customers and must never be presented as customer validation.
+      </div>
+      <div class="page-head"><div><h1>Synthetic dataset</h1>
+        <p class="muted">${PL.seed.SYNTHETIC_OWNERS.toLocaleString()} labeled synthetic owners with linked pet profiles and sample activity, generated ${h(U.fmtTs(d.seededAt))}.</p></div>
+        <div class="head-actions">${EMBEDDED ? '' : '<button class="btn" data-action="export-data">Export JSON</button>'}<button class="btn btn-danger" data-action="reset-data">Reset all data</button></div>
+      </div>
+      <div class="stats">
+        ${stat(synUsers.length, 'Synthetic owners')}
+        ${stat(synPets.length, 'Linked pet profiles')}
+        ${stat(puppies, `Puppies under 1 year (of ${dogs.toLocaleString()} dogs)`)}
+        ${stat(d.records.filter((r) => synPetIds.has(r.petId)).length, 'Veterinary records')}
+        ${stat(d.symptoms.filter((s) => synPetIds.has(s.petId)).length, 'Symptom entries')}
+        ${stat(synActivity.length, 'Activity events')}
+      </div>
+      <div class="two-col">
+        <section class="card">
+          <h2>Synthetic activity by action</h2>
+          <table class="data"><tbody>${Object.entries(C.actions).map(([k, v]) => `<tr><td>${h(v)}</td><td class="num">${(counts[k] || 0).toLocaleString()}</td></tr>`).join('')}</tbody></table>
+        </section>
+        <section class="card">
+          <h2>Non-synthetic accounts in this browser</h2>
+          <ul class="plain">${realUsers.map((u) => `<li><strong>${h(u.name)}</strong> <span class="muted small">${h(u.email)}</span> · ${store.petsOf(u.id).length} pet(s) · ${store.activityOf(u.id).length} events</li>`).join('')}</ul>
+          <p class="small muted">The Demo Owner’s pet, Maple, is sample data for demonstrations.</p>
+        </section>
+      </div>
+      <section class="card">
+        <div class="card-head"><h2>Synthetic owner accounts</h2>
+          <input id="data-search" class="search" type="search" placeholder="Search name, email, ID, or pet…" value="${h(ui.dataQuery)}" aria-label="Search synthetic owners"></div>
+        <div id="owners-table">${ownersTable()}</div>
+      </section>`;
+  }
+
+  const notFound = (msg) => `<div class="card empty"><h2>Not found</h2><p class="muted">${h(msg)}</p><a class="btn" href="#/pets">Back to my pets</a></div>`;
+
+  // ---------- Router ----------
+  function render() {
+    const [view = '', id, tab] = route.replace(/^#\/?/, '').split('/');
+    const user = store.currentUser();
+    let html;
+    let key = view || 'pets';
+
+    if (!user && key !== 'data') {
+      key = 'login';
+      html = viewLogin();
+    } else if (key === 'login') {
+      return go('#/pets');
+    } else if (key === 'pets') {
+      html = viewPets(user);
+    } else if (key === 'pet') {
+      key = 'pets';
+      const pet = id === 'new' ? null : store.pet(id);
+      if (id === 'new') html = viewPetForm(null);
+      else if (!pet || pet.ownerId !== user.id) html = notFound('This pet is not on your account.');
+      else if (tab === 'edit') html = viewPetForm(pet);
+      else html = viewPet(user, pet, TABS.some(([k]) => k === tab) ? tab : 'overview');
+    } else if (key === 'activity') {
+      html = viewActivity(user);
+    } else if (key === 'data') {
+      html = viewData();
+    } else {
+      html = notFound('That page does not exist.');
+    }
+
+    app.innerHTML = `${header(user, key)}<main class="wrap main">${html}</main>${footer()}`;
+    const tabBar = app.querySelector('.tabs');
+    const activeTab = tabBar && tabBar.querySelector('a.active');
+    if (activeTab) tabBar.scrollLeft = activeTab.offsetLeft - tabBar.offsetLeft - (tabBar.clientWidth - activeTab.offsetWidth) / 2;
+  }
+
+  // ---------- Form handlers ----------
+  const str = (fd, k) => String(fd.get(k) || '').trim();
+  const fail = (form, msg) => {
+    toast(msg, 'error');
+    const bad = form.querySelector(':invalid');
+    if (bad) bad.focus();
+    return false;
+  };
+
+  const forms = {
+    'sign-up'(form, fd) {
+      const name = str(fd, 'name');
+      const email = str(fd, 'email');
+      if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail(form, 'Enter your name and a valid email.');
+      const existing = store.findUserByEmail(email);
+      if (existing && existing.synthetic) return fail(form, 'That email belongs to a synthetic test account. Use your own email.');
+      if (existing) {
+        store.signIn(existing.id);
+        toast(`Welcome back, ${existing.name}.`);
+      } else {
+        store.createUser({ name, email });
+        toast('Account created.');
+      }
+      go('#/pets');
+    },
+
+    pet(form, fd) {
+      const user = store.currentUser();
+      const weight = str(fd, 'weightLb');
+      const fields = {
+        name: str(fd, 'name'), species: str(fd, 'species') || 'dog', breed: str(fd, 'breed'), size: str(fd, 'size'),
+        sex: str(fd, 'sex'), neutered: fd.get('neutered') === 'on', birthDate: str(fd, 'birthDate'),
+        weightLb: weight === '' ? null : Math.round(Number(weight) * 10) / 10,
+        allergies: str(fd, 'allergies'), medications: str(fd, 'medications'), conditions: str(fd, 'conditions'),
+        clinic: str(fd, 'clinic'), microchip: str(fd, 'microchip'),
+      };
+      if (!fields.name) return fail(form, 'Please enter a name.');
+      if (!fields.birthDate) return fail(form, 'Please enter a birth date (an estimate is fine).');
+      if (fields.birthDate > U.today()) return fail(form, 'Birth date cannot be in the future.');
+      if (fields.weightLb !== null && !(fields.weightLb >= 0)) return fail(form, 'Weight must be a positive number.');
+      const id = form.dataset.petId;
+      if (id) {
+        const changed = store.updatePet(id, user.id, fields);
+        toast(changed.length ? 'Profile saved.' : 'No changes to save.');
+        go(`#/pet/${id}`);
+      } else {
+        const pet = store.createPet(user.id, fields);
+        toast(`${pet.name}’s profile created.`);
+        go(`#/pet/${pet.id}`);
+      }
+    },
+
+    async record(form, fd) {
+      const user = store.currentUser();
+      const petId = form.dataset.petId;
+      const fields = { date: str(fd, 'date'), type: str(fd, 'type'), title: str(fd, 'title'), clinic: str(fd, 'clinic'), notes: str(fd, 'notes') };
+      if (!fields.date || fields.date > U.today()) return fail(form, 'Enter a record date that is not in the future.');
+      if (!fields.title) return fail(form, 'Please add a title for this record.');
+      const file = fd.get('file');
+      let attachment = null;
+      if (file && file.size) {
+        if (file.size > 10 * 1024 * 1024) return fail(form, 'Files must be 10 MB or smaller.');
+        fields.id = U.uid('r');
+        try {
+          await PL.files.put(fields.id, file);
+          attachment = { name: file.name, size: file.size, type: file.type };
+        } catch (e) {
+          console.error(e);
+          return fail(form, 'Could not store the file in this browser.');
+        }
+      }
+      store.addRecord(petId, user.id, fields, attachment);
+      toast(attachment ? 'Record and file saved.' : 'Record saved.');
+      render();
+    },
+
+    symptom(form, fd) {
+      const user = store.currentUser();
+      const petId = form.dataset.petId;
+      const fields = {
+        date: str(fd, 'date'), category: str(fd, 'category'), severity: Number(fd.get('severity')) || 2,
+        description: str(fd, 'description'), duration: str(fd, 'duration'), redFlags: fd.getAll('redFlags').map(String),
+      };
+      if (!fields.date || fields.date > U.today()) return fail(form, 'Enter a date that is not in the future.');
+      if (!fields.description) return fail(form, 'Describe what you noticed.');
+      store.addSymptom(petId, user.id, fields);
+      toast(fields.redFlags.length ? 'Saved. Warning signs logged — contact a veterinarian now.' : 'Symptom saved to the timeline.', fields.redFlags.length ? 'error' : '');
+      render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+
+    questions(form, fd) {
+      store.saveVetQuestions(form.dataset.petId, String(fd.get('questions') || '').trim());
+      toast('Questions saved.');
+      render();
+    },
+  };
+
+  // ---------- Click actions ----------
+  const actions = {
+    'demo-sign-in'() {
+      store.signIn('u_demo');
+      go('#/pets');
+    },
+    'sign-out'() {
+      store.signOut();
+      go('#/login');
+    },
+    'view-as'(btn) {
+      store.signIn(btn.dataset.id);
+      toast('Opened a synthetic test account.');
+      go('#/pets');
+    },
+    'timeline-filter'(btn) {
+      ui.timeline = btn.dataset.v;
+      render();
+    },
+    'act-page'(btn) {
+      ui.actPage = Number(btn.dataset.page);
+      render();
+    },
+    'data-page'(btn) {
+      ui.dataPage = Number(btn.dataset.page);
+      document.getElementById('owners-table').innerHTML = ownersTable();
+    },
+    print() {
+      window.print();
+    },
+    async 'copy-summary'(btn) {
+      const text = summaryText(store.pet(btn.dataset.pet), store.currentUser());
+      try {
+        await navigator.clipboard.writeText(text);
+        toast('Summary copied.');
+      } catch (e) {
+        const ta = Object.assign(document.createElement('textarea'), { value: text });
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+        toast('Summary copied.');
+      }
+    },
+    'add-questions'(btn) {
+      const pet = store.pet(btn.dataset.pet);
+      const existing = (pet.vetQuestions || '').split('\n').filter(Boolean);
+      const add = btn.dataset.q.split('\n').filter((q) => !existing.includes(q));
+      store.saveVetQuestions(pet.id, [...existing, ...add].join('\n'));
+      toast(add.length ? `Added ${add.length} question${add.length === 1 ? '' : 's'} to the vet summary.` : 'Already in your questions.');
+    },
+    async 'open-file'(btn) {
+      try {
+        const rec = store.data.records.find((r) => r.id === btn.dataset.id);
+        if (rec && rec.attachment && rec.attachment.synthetic) return toast('Synthetic record: only file details were generated, there is no file to open.');
+        const file = await PL.files.get(btn.dataset.id);
+        if (!file) return toast('That file is not stored in this browser.', 'error');
+        const url = URL.createObjectURL(file);
+        if (/^image\//.test(file.type)) return showPreview(url, rec ? rec.attachment.name : 'Record');
+        if (EMBEDDED) {
+          URL.revokeObjectURL(url);
+          return toast('The file is saved with this record. Opening PDFs is not available in this viewer.');
+        }
+        const a = Object.assign(document.createElement('a'), { href: url, target: '_blank', rel: 'noopener' });
+        if (!/^(application\/pdf|image\/)/.test(file.type)) a.download = file.name || 'record';
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 60000);
+      } catch (e) {
+        toast('Could not open the file.', 'error');
+      }
+    },
+    'export-data'() {
+      const d = store.data;
+      const syn = new Set(d.users.filter((u) => u.synthetic).map((u) => u.id));
+      const pets = d.pets.filter((p) => syn.has(p.ownerId));
+      const petIds = new Set(pets.map((p) => p.id));
+      const out = {
+        notice: 'SYNTHETIC TEST DATA generated for the PetLumen prototype. Not real customers.',
+        generatedAt: d.seededAt,
+        users: d.users.filter((u) => syn.has(u.id)), pets,
+        records: d.records.filter((r) => petIds.has(r.petId)),
+        symptoms: d.symptoms.filter((s) => petIds.has(s.petId)),
+        activity: d.activity.filter((a) => syn.has(a.userId)),
+      };
+      const url = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' }));
+      Object.assign(document.createElement('a'), { href: url, download: 'petlumen-synthetic-data.json' }).click();
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+    },
+    'close-preview'() {
+      const el = document.getElementById('preview');
+      if (el) {
+        URL.revokeObjectURL(el.dataset.url);
+        el.remove();
+      }
+    },
+    // Two-step confirmation in the page, because embedded viewers block confirm().
+    async 'reset-data'(btn) {
+      if (btn.dataset.armed !== 'yes') {
+        btn.dataset.armed = 'yes';
+        btn.textContent = 'Click again to delete your data and rebuild the dataset';
+        setTimeout(() => {
+          if (btn.isConnected) {
+            btn.dataset.armed = '';
+            btn.textContent = 'Reset all data';
+          }
+        }, 6000);
+        return;
+      }
+      await store.reset();
+      Object.assign(ui, { dataPage: 1, dataQuery: '', actPage: 1, actPet: '', actAction: '', timeline: 'all' });
+      toast('Data reset.');
+      go('#/login');
+    },
+  };
+
+  function showPreview(url, name) {
+    actions['close-preview']();
+    const el = document.createElement('div');
+    el.id = 'preview';
+    el.className = 'preview';
+    el.dataset.url = url;
+    el.innerHTML = `<div class="preview-box" role="dialog" aria-label="${h(name)}">
+      <div class="card-head"><strong>${h(name)}</strong><button class="btn btn-sm" data-action="close-preview">Close</button></div>
+      <img src="${url}" alt="${h(name)}"></div>`;
+    document.body.appendChild(el);
+  }
+
+  // ---------- Wiring ----------
+  document.addEventListener('submit', (e) => {
+    const form = e.target.closest('form[data-form]');
+    if (!form || !forms[form.dataset.form]) return;
+    e.preventDefault();
+    forms[form.dataset.form](form, new FormData(form));
+  });
+
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href^="#/"]');
+    if (link) {
+      e.preventDefault();
+      go(link.getAttribute('href'));
+      return;
+    }
+    const el = e.target.closest('[data-action]');
+    if (!el || !actions[el.dataset.action]) return;
+    e.preventDefault();
+    actions[el.dataset.action](el, e);
+  });
+
+  let searchTimer;
+  document.addEventListener('input', (e) => {
+    if (e.target.id === 'data-search') {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => {
+        ui.dataQuery = e.target.value;
+        ui.dataPage = 1;
+        document.getElementById('owners-table').innerHTML = ownersTable();
+      }, 150);
+    }
+    // Fill size and species automatically when a known breed is chosen.
+    if (e.target.name === 'breed') {
+      const form = e.target.form;
+      const dog = C.dogBreeds.find(([b]) => b.toLowerCase() === e.target.value.trim().toLowerCase());
+      const cat = C.catBreeds.find(([b]) => b.toLowerCase() === e.target.value.trim().toLowerCase());
+      if (dog || cat) {
+        form.elements.species.value = dog ? 'dog' : 'cat';
+        if (dog) form.elements.size.value = dog[1];
+      }
+    }
+  });
+
+  document.addEventListener('change', (e) => {
+    const f = e.target.dataset && e.target.dataset.filter;
+    if (f) {
+      ui[f] = e.target.value;
+      ui.actPage = 1;
+      render();
+    }
+  });
+
+  // A typed or bookmarked #/… address still works when the app runs on its own.
+  window.addEventListener('hashchange', () => {
+    if (location.hash.startsWith('#/')) go(location.hash);
+  });
+
+  store.init().then(() => {
+    let saved = null;
+    try {
+      saved = localStorage.getItem(ROUTE_KEY);
+    } catch (e) {
+      /* no saved page */
+    }
+    route = (location.hash.startsWith('#/') && location.hash) || (saved && saved.startsWith('#/') && saved) || '#/';
+    render();
+  });
+})(window.PL);
+
+</script>
+</body>
+</html>

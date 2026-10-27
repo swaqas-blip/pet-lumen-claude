@@ -6,14 +6,16 @@ This is the working prototype for MGMT 485 (Prototype Assignment, Steps 1–3). 
 
 ## Run it
 
-Any static file server works:
+**Easiest:** download `PetLumen.html` from this repository and double-click it. It opens in your web browser, and you don't need to install anything.
+
+**For development:** serve the folder with any static file server:
 
 ```bash
 python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
-It can also be published as-is with GitHub Pages (Settings → Pages → deploy from this branch).
+After changing anything in `css/` or `js/`, run `node tools/build-single-file.js` to rebuild `PetLumen.html`.
 
 ## The three core features
 
@@ -57,6 +59,8 @@ js/seed.js          Synthetic dataset + demo owner
 js/guidance.js      Rule-based wellness guidance with sources
 js/app.js           Router, views, and event handlers
 tests/demo-flow.test.js  End-to-end check of the demo script (Playwright)
+tools/build-single-file.js  Bundles everything into PetLumen.html
+PetLumen.html       Single-file version of the app (generated)
 ```
 
 Run the end-to-end test with `node tests/demo-flow.test.js`. It needs the `playwright` package and Chromium.

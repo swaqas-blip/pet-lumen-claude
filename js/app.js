@@ -17,10 +17,28 @@
   // ---------- Helpers ----------
   const h = (v) =>
     String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  // Navigation is kept in the page (not the address bar) so the app also works
+  // inside embedded viewers. The last page is remembered for refreshes.
+  const ROUTE_KEY = 'petlumen.route';
+  let route = '#/';
   const go = (hash) => {
-    if (location.hash === hash) render();
-    else location.hash = hash;
+    route = hash;
+    try {
+      localStorage.setItem(ROUTE_KEY, hash);
+    } catch (e) {
+      /* remembering the page is optional */
+    }
+    render();
+    window.scrollTo(0, 0);
   };
+  // Inside an iframe viewer, printing and file downloads are blocked.
+  const EMBEDDED = (() => {
+    try {
+      return window.self !== window.top;
+    } catch (e) {
+      return true;
+    }
+  })();
   const speciesIcon = (pet) => (pet.species === 'cat' ? '🐱' : '🐶');
   const sevClass = (n) => (n >= 4 ? 'sev-high' : n >= 3 ? 'sev-mid' : 'sev-low');
   const recent = (ts, minutes) => ts && Date.now() - Date.parse(ts) < minutes * 60000;
@@ -67,6 +85,7 @@
             : '<a class="btn btn-sm btn-primary" href="#/login">Sign in</a>'}
         </div>
       </div></header>
+      ${store.saving ? '' : '<div class="syn-banner" role="note"><div class="wrap">This browser is blocking storage, so changes will be lost when you close or refresh the page.</div></div>'}
       ${user && user.synthetic
         ? `<div class="syn-banner" role="note"><div class="wrap">You are viewing <strong>${h(user.name)}</strong>, a <strong>synthetic test account</strong>. This is generated sample data, not a real customer.</div></div>`
         : ''}`;
@@ -80,6 +99,13 @@
       <p class="muted">Data is stored only in this browser.</p>
     </div></footer>`;
 
+  const svg = (d) => `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+  const ICONS = {
+    profile: svg('<path d="M4 5a1 1 0 0 1 1-1h4l2 2h8a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M9 13h6M12 10v6"/>'),
+    symptoms: svg('<path d="M3 12h4l2-6 4 12 2-6h6"/>'),
+    guidance: svg('<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>'),
+  };
+
   // ---------- Views ----------
   function viewLogin() {
     return `
@@ -89,9 +115,9 @@
           <h1>Your pet’s health, in one clear place.</h1>
           <p class="lead">PetLumen helps first-time puppy owners manage their pet’s everyday health by connecting a digital health profile, symptom history, and personalized wellness guidance in one place.</p>
           <ul class="feature-list">
-            <li><span class="fi">📁</span><div><strong>Pet Health Profile</strong><br>Keep vaccines, visits, medications, and uploaded records together.</div></li>
-            <li><span class="fi">📈</span><div><strong>Symptom Tracking</strong><br>Record what changed and when, then review it on a dated timeline.</div></li>
-            <li><span class="fi">💡</span><div><strong>Wellness Guidance</strong><br>Care information matched to your pet’s profile, with visible sources.</div></li>
+            <li><span class="fi">${ICONS.profile}</span><div><strong>Pet Health Profile</strong><br>Keep vaccines, visits, medications, and uploaded records together.</div></li>
+            <li><span class="fi">${ICONS.symptoms}</span><div><strong>Symptom Tracking</strong><br>Record what changed and when, then review it on a dated timeline.</div></li>
+            <li><span class="fi">${ICONS.guidance}</span><div><strong>Wellness Guidance</strong><br>Care information matched to your pet’s profile, with visible sources.</div></li>
           </ul>
         </div>
         <div class="card auth-card">
@@ -451,8 +477,8 @@
     const qs = (pet.vetQuestions || '').split('\n').filter(Boolean);
     return `
       <div class="summary-actions no-print">
-        <button class="btn btn-primary" data-action="print">Print / save as PDF</button>
-        <button class="btn" data-action="copy-summary" data-pet="${h(pet.id)}">Copy as text</button>
+        ${EMBEDDED ? '' : '<button class="btn btn-primary" data-action="print">Print / save as PDF</button>'}
+        <button class="btn${EMBEDDED ? ' btn-primary' : ''}" data-action="copy-summary" data-pet="${h(pet.id)}">Copy as text</button>
       </div>
       <article class="card summary" id="vet-summary">
         <header class="summary-head">
@@ -583,7 +609,7 @@
       </div>
       <div class="page-head"><div><h1>Synthetic dataset</h1>
         <p class="muted">${PL.seed.SYNTHETIC_OWNERS.toLocaleString()} labeled synthetic owners with linked pet profiles and sample activity, generated ${h(U.fmtTs(d.seededAt))}.</p></div>
-        <div class="head-actions"><button class="btn" data-action="export-data">Export JSON</button><button class="btn btn-danger" data-action="reset-data">Reset all data</button></div>
+        <div class="head-actions">${EMBEDDED ? '' : '<button class="btn" data-action="export-data">Export JSON</button>'}<button class="btn btn-danger" data-action="reset-data">Reset all data</button></div>
       </div>
       <div class="stats">
         ${stat(synUsers.length, 'Synthetic owners')}
@@ -615,7 +641,7 @@
 
   // ---------- Router ----------
   function render() {
-    const [view = '', id, tab] = location.hash.replace(/^#\/?/, '').split('/');
+    const [view = '', id, tab] = route.replace(/^#\/?/, '').split('/');
     const user = store.currentUser();
     let html;
     let key = view || 'pets';
@@ -643,6 +669,9 @@
     }
 
     app.innerHTML = `${header(user, key)}<main class="wrap main">${html}</main>${footer()}`;
+    const tabBar = app.querySelector('.tabs');
+    const activeTab = tabBar && tabBar.querySelector('a.active');
+    if (activeTab) tabBar.scrollLeft = activeTab.offsetLeft - tabBar.offsetLeft - (tabBar.clientWidth - activeTab.offsetWidth) / 2;
   }
 
   // ---------- Form handlers ----------
@@ -801,6 +830,11 @@
         const file = await PL.files.get(btn.dataset.id);
         if (!file) return toast('That file is not stored in this browser.', 'error');
         const url = URL.createObjectURL(file);
+        if (/^image\//.test(file.type)) return showPreview(url, rec ? rec.attachment.name : 'Record');
+        if (EMBEDDED) {
+          URL.revokeObjectURL(url);
+          return toast('The file is saved with this record. Opening PDFs is not available in this viewer.');
+        }
         const a = Object.assign(document.createElement('a'), { href: url, target: '_blank', rel: 'noopener' });
         if (!/^(application\/pdf|image\/)/.test(file.type)) a.download = file.name || 'record';
         a.click();
@@ -826,14 +860,44 @@
       Object.assign(document.createElement('a'), { href: url, download: 'petlumen-synthetic-data.json' }).click();
       setTimeout(() => URL.revokeObjectURL(url), 60000);
     },
-    async 'reset-data'() {
-      if (!confirm('Reset all PetLumen data in this browser? Your own accounts, pets, and uploads will be deleted and the synthetic dataset regenerated.')) return;
+    'close-preview'() {
+      const el = document.getElementById('preview');
+      if (el) {
+        URL.revokeObjectURL(el.dataset.url);
+        el.remove();
+      }
+    },
+    // Two-step confirmation in the page, because embedded viewers block confirm().
+    async 'reset-data'(btn) {
+      if (btn.dataset.armed !== 'yes') {
+        btn.dataset.armed = 'yes';
+        btn.textContent = 'Click again to delete your data and rebuild the dataset';
+        setTimeout(() => {
+          if (btn.isConnected) {
+            btn.dataset.armed = '';
+            btn.textContent = 'Reset all data';
+          }
+        }, 6000);
+        return;
+      }
       await store.reset();
       Object.assign(ui, { dataPage: 1, dataQuery: '', actPage: 1, actPet: '', actAction: '', timeline: 'all' });
       toast('Data reset.');
       go('#/login');
     },
   };
+
+  function showPreview(url, name) {
+    actions['close-preview']();
+    const el = document.createElement('div');
+    el.id = 'preview';
+    el.className = 'preview';
+    el.dataset.url = url;
+    el.innerHTML = `<div class="preview-box" role="dialog" aria-label="${h(name)}">
+      <div class="card-head"><strong>${h(name)}</strong><button class="btn btn-sm" data-action="close-preview">Close</button></div>
+      <img src="${url}" alt="${h(name)}"></div>`;
+    document.body.appendChild(el);
+  }
 
   // ---------- Wiring ----------
   document.addEventListener('submit', (e) => {
@@ -844,6 +908,12 @@
   });
 
   document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href^="#/"]');
+    if (link) {
+      e.preventDefault();
+      go(link.getAttribute('href'));
+      return;
+    }
     const el = e.target.closest('[data-action]');
     if (!el || !actions[el.dataset.action]) return;
     e.preventDefault();
@@ -881,16 +951,19 @@
     }
   });
 
+  // A typed or bookmarked #/… address still works when the app runs on its own.
   window.addEventListener('hashchange', () => {
-    render();
-    window.scrollTo(0, 0);
+    if (location.hash.startsWith('#/')) go(location.hash);
   });
 
-  store
-    .init()
-    .then(render)
-    .catch((e) => {
-      console.error(e);
-      app.innerHTML = '<p class="loading">PetLumen could not open browser storage. Private browsing or blocked site data can cause this.</p>';
-    });
+  store.init().then(() => {
+    let saved = null;
+    try {
+      saved = localStorage.getItem(ROUTE_KEY);
+    } catch (e) {
+      /* no saved page */
+    }
+    route = (location.hash.startsWith('#/') && location.hash) || (saved && saved.startsWith('#/') && saved) || '#/';
+    render();
+  });
 })(window.PL);

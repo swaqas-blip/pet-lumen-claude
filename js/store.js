@@ -92,6 +92,7 @@ window.PL = window.PL || {};
   }
 
   function tx(storeName, mode, fn) {
+    if (!idb) return Promise.reject(new Error('Browser storage is not available'));
     return new Promise((resolve, reject) => {
       const t = idb.transaction(storeName, mode);
       const req = fn(t.objectStore(storeName));
@@ -105,6 +106,7 @@ window.PL = window.PL || {};
   // snapshot always matches the state at the moment of the change.
   let pendingWrites = 0;
   function persist() {
+    if (!idb) return Promise.resolve();
     pendingWrites++;
     return tx('state', 'readwrite', (s) => s.put(db, 'db'))
       .catch((e) => {
@@ -148,9 +150,17 @@ window.PL = window.PL || {};
   };
 
   PL.store = {
+    // If the browser blocks storage (private mode, blocked site data), the app
+    // still runs from memory and shows a notice that changes will not be kept.
     async init() {
-      idb = await openIdb();
-      const saved = await tx('state', 'readonly', (s) => s.get('db'));
+      let saved = null;
+      try {
+        idb = await openIdb();
+        saved = await tx('state', 'readonly', (s) => s.get('db'));
+      } catch (e) {
+        console.warn('PetLumen: browser storage unavailable, running in memory', e);
+        idb = null;
+      }
       db = saved && saved.schema === SCHEMA ? saved : null;
       if (!db) {
         db = PL.seed.build(new Date());
@@ -158,8 +168,11 @@ window.PL = window.PL || {};
       }
       return db;
     },
+    get saving() {
+      return !!idb;
+    },
     async reset() {
-      await tx('files', 'readwrite', (s) => s.clear());
+      await tx('files', 'readwrite', (s) => s.clear()).catch(() => {});
       db = PL.seed.build(new Date());
       await persist();
     },
