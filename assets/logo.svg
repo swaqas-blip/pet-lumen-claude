@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="PetLumen">
+  <g stroke="#F2B233" stroke-width="2.6" stroke-linecap="round">
+    <line x1="36" y1="3" x2="36" y2="8.5"/>
+    <line x1="43.5" y1="6.5" x2="39.8" y2="10.6"/>
+    <line x1="46" y1="14.5" x2="41" y2="15.6"/>
+  </g>
+  <g fill="#1B2B4B">
+    <ellipse cx="9.5" cy="21" rx="4.2" ry="5.2" transform="rotate(-18 9.5 21)"/>
+    <ellipse cx="18" cy="12.5" rx="4.4" ry="5.6" transform="rotate(-6 18 12.5)"/>
+    <ellipse cx="28.5" cy="12.5" rx="4.4" ry="5.6" transform="rotate(8 28.5 12.5)"/>
+    <ellipse cx="36.5" cy="21.5" rx="4.2" ry="5.2" transform="rotate(20 36.5 21.5)"/>
+  </g>
+  <path fill="#14948F" d="M23 22.5c-5.6 0-11.8 8.4-11.8 13.6 0 4.4 3.6 6.6 7.4 6.6 2 0 3.1-.9 4.4-.9s2.4.9 4.4.9c3.8 0 7.4-2.2 7.4-6.6 0-5.2-6.2-13.6-11.8-13.6z"/>
+</svg>
